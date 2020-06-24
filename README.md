@@ -1,4 +1,6 @@
-[![Build Status](https://travis.ibm.com/seed/ibmcloud-iam-operator.svg?token=a5HZPMvujFJXhTzxH5Gq&branch=master)](https://travis.ibm.com/seed/ibmcloud-iam-operator)
+[![Build Status](https://travis-ci.com/IBM/ibmcloud-iam-operator.svg?branch=master)](https://travis-ci.com/IBM/ibmcloud-iam-operator)
+[![Go Report Card](https://goreportcard.com/badge/github.com/IBM/ibmcloud-iam-operator)](https://goreportcard.com/report/github.com/IBM/ibmcloud-iam-operator)
+[![GoDoc](https://godoc.org/github.com/IBM/ibmcloud-iam-operator?status.svg)](https://godoc.org/github.com/IBM/ibmcloud-iam-operator)
 
 # IBM Cloud's IAM Access Policy Management with Kubernetes Operators
 
