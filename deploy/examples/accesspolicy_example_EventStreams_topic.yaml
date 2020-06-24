@@ -1,0 +1,91 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessPolicy
+metadata:
+  name: eventstreamstopicpolicy
+spec:
+  subject:
+    userEmail: avarghese@us.ibm.com
+  roles:
+    definedRoles:
+      - Viewer
+      - Administrator
+  target: 
+    resourceGroup: Default
+    serviceClass: messagehub
+    serviceID: 9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631
+    resourceName: topic
+    resourceID: topic-ansu
+
+---
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessPolicy
+metadata:
+  name: eventstreamstopicservicepolicy
+spec:
+  subject:
+    serviceID: ServiceId-fa27c539-a6cf-41d2-8cb0-2916da5f8e8a
+  roles: 
+    definedRoles:
+      - Viewer
+      - Administrator
+  target: 
+    resourceGroup: Default
+    serviceClass: messagehub
+    serviceID: 9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631
+    resourceName: topic
+    resourceID: topic-ansu
+
+---
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessPolicy
+metadata:
+  name: eventstreamstopicgrouppolicy
+spec:
+  subject:
+    accessGroupID: AccessGroupId-4099639d-95d2-4d78-ae6b-536f3891953c
+  roles: 
+    definedRoles:
+      - Viewer
+      - Administrator
+  target: 
+    resourceGroup: Default    
+    serviceClass: messagehub
+    serviceID: 9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631
+    resourceName: topic
+    resourceID: topic-ansu
+
+---
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessGroup
+metadata:
+  name: eventstreamstopicnewgroup
+spec:
+  name: eventstreamstopicnewgroup
+  description: A new access group to test access group controller
+  userEmails:
+      - avarghese@us.ibm.com
+      - mvaziri@us.ibm.com
+  serviceIDs:
+    - ServiceId-3b9f026a-eb6e-495f-b104-95232d0c4a59
+    - ServiceId-fa27c539-a6cf-41d2-8cb0-2916da5f8e8a   
+
+---
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessPolicy
+metadata:
+  name: eventstreamstopicnewgrouppolicy
+spec:
+  subject:
+    accessGroupDef: 
+      accessGroupName: eventstreamstopicnewgroup
+      accessGroupNamespace: default
+  roles: 
+    definedRoles:
+      - Viewer
+      - Administrator
+  target: 
+    resourceGroup: Default    
+    serviceClass: messagehub
+    serviceID: 9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631
+    resourceName: topic
+    resourceID: topic-ansu      

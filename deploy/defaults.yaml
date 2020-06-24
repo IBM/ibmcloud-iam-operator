@@ -1,0 +1,257 @@
+# Constants used to package the operator for operator hub
+
+operator_name: ibmcloud-iam-operator
+channel_name: alpha
+maturity: alpha
+image: cloudoperators/ibmcloud-iam-operator
+crd:
+    - kind: AccessGroup
+      description: Represents an instance of an access group resource on IBM Cloud IAM.
+      example: |-
+        {"apiVersion": "ibmcloud.ibm.com/v1alpha1",
+            "kind": "AccessGroup",
+            "metadata": {
+            "name": "mygroup"
+            },
+            "spec": {
+            "name": "ESAccessGroup",
+            "description": "A new access group to test access group controller",
+            "userEmails": "avarghese@us.ibm.com",
+            "serviceIDs": "ServiceId-3b9f026a-eb6e-495f-b104-95232d0c4a59"
+            }
+        }
+      resources:
+        - kind: Secret
+          version: v1
+        - kind: ConfigMap
+          version: v1
+        - kind: AccessGroup
+          version: v1alpha1    
+      specDescriptors:        
+        - description: Description for the new access group
+          displayName: Description
+          path: description
+          x-descriptors:
+            - 'urn:alm:descriptor:text'
+        - description: Name of the new access group to be created
+          displayName: Name
+          path: name
+          x-descriptors:
+            - 'urn:alm:descriptor:text'   
+        - description: IAM IDs of Services that will be members of this new group
+          displayName: Service IDs
+          path: serviceIDs
+          x-descriptors:
+            - 'urn:alm:descriptor:text'  
+        - description: Email IDs of the IAM Users who will be members of this new group
+          displayName: User Emails
+          path: userEmails
+          x-descriptors:
+            - 'urn:alm:descriptor:text' 
+      statusDescriptors:
+        - description: Detailed message on current status
+          displayName: Message
+          path: message
+          x-descriptors:
+            - 'urn:alm:descriptor:text'    
+        - description: Current state for the access group
+          displayName: State
+          path: state
+          x-descriptors:
+            - 'urn:alm:descriptor:text'      
+        - description: Group ID for the access group
+          displayName: Group ID
+          path: groupID
+          x-descriptors:
+            - 'urn:alm:descriptor:text' 
+        - description: Description for the new access group
+          displayName: Description
+          path: description
+          x-descriptors:
+            - 'urn:alm:descriptor:text'
+        - description: Name of the new access group to be created
+          displayName: Name
+          path: name
+          x-descriptors:
+            - 'urn:alm:descriptor:text'   
+        - description: IAM IDs of Services that will be members of this new group
+          displayName: Service IDs
+          path: serviceIDs
+          x-descriptors:
+            - 'urn:alm:descriptor:text'  
+        - description: Email IDs of the IAM Users who will be members of this new group
+          displayName: User Emails
+          path: userEmails
+          x-descriptors:
+            - 'urn:alm:descriptor:text'                  
+    - kind: CustomRole
+      description: Represents an instance of a custom role resource on IBM Cloud IAM.
+      example: |-
+        {"apiVersion": "ibmcloud.ibm.com/v1alpha1",
+            "kind": "CustomRole",
+            "metadata": {
+            "name": "myrole"
+            },
+            "spec": {
+            "roleName": "ESAdmin",
+            "serviceClass": "messagehub",
+            "displayName": "ES Admin",
+            "description": "Event Streams admin is an admin that only has a subset of the privileges of an Admin role",
+            "actions": "iam.policy.create"
+            }
+        }
+      resources:
+        - kind: Secret
+          version: v1
+        - kind: ConfigMap
+          version: v1
+        - kind: CustomRole
+          version: v1alpha1
+      specDescriptors:        
+        - description: Name of the new custom role to be created
+          displayName: Role Name
+          path: roleName
+          x-descriptors:
+            - 'urn:alm:descriptor:text'
+        - description: Display name of the new custom role to be created
+          displayName: Display Name
+          path: displayName
+          x-descriptors:
+            - 'urn:alm:descriptor:text'    
+        - description: Name of the IBM Cloud service that is linked to this new role
+          displayName: Service Class
+          path: serviceClass
+          x-descriptors:
+            - 'urn:alm:descriptor:text' 
+        - description: Description for this new custom role
+          displayName: Description
+          path: description
+          x-descriptors:
+            - 'urn:alm:descriptor:text' 
+        - description: List of actions that this role can perform (IAM actions as well as actions available for the service specified in ServiceClass
+          displayName: Actions
+          path: actions
+          x-descriptors:
+            - 'urn:alm:descriptor:text'             
+      statusDescriptors:
+        - description: Detailed message on current status
+          displayName: Message
+          path: message
+          x-descriptors:
+            - 'urn:alm:descriptor:text'    
+        - description: Current state for the binding
+          displayName: State
+          path: state
+          x-descriptors:
+            - 'urn:alm:descriptor:text'
+        - description: Role ID for the custom role
+          displayName: Role ID
+          path: roleID
+          x-descriptors:
+            - 'urn:alm:descriptor:text'
+        - description: Role CRN for the custom role
+          displayName: Role CRN
+          path: roleCRN
+          x-descriptors:
+            - 'urn:alm:descriptor:text'  
+        - description: Name of the new custom role to be created
+          displayName: Role Name
+          path: roleName
+          x-descriptors:
+            - 'urn:alm:descriptor:text'
+        - description: Display name of the new custom role to be created
+          displayName: Display Name
+          path: displayName
+          x-descriptors:
+            - 'urn:alm:descriptor:text'    
+        - description: Name of the IBM Cloud service that is linked to this new role
+          displayName: Service Class
+          path: serviceClass
+          x-descriptors:
+            - 'urn:alm:descriptor:text' 
+        - description: Description for this new custom role
+          displayName: Description
+          path: description
+          x-descriptors:
+            - 'urn:alm:descriptor:text' 
+        - description: List of actions that this role can perform (IAM actions as well as actions available for the service specified in ServiceClass
+          displayName: Actions
+          path: actions
+          x-descriptors:
+            - 'urn:alm:descriptor:text'    
+    - kind: AccessPolicy
+      description: Represents an instance of a access policy resource on IBM Cloud IAM.
+      example: |-
+        {"apiVersion": "ibmcloud.ibm.com/v1alpha1",
+            "kind": "AccessPolicy",
+            "metadata": {
+            "name": "mypolicy"
+            },
+            "spec": {
+            "subject": {   
+            "userEmail": "avarghese@us.ibm.com"
+            },
+            "roles": {
+              "definedRoles": "Viewer"
+            },
+            "target": { 
+            "resourceGroup": "Default",
+            "serviceClass": "messagehub",
+            "serviceID": "9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631"
+            }
+            }
+        }
+      resources:
+        - kind: Secret
+          version: v1
+        - kind: ConfigMap
+          version: v1
+        - kind: AccessPolicy
+          version: v1alpha1
+      specDescriptors:        
+        - description: Type to specify the Subject of an access policy
+          displayName: Subject
+          path: subject
+          x-descriptors:
+            - 'urn:alm:descriptor:text'   
+        - description: Type to specify a list of Roles of an access policy
+          displayName: Roles
+          path: roles
+          x-descriptors:
+            - 'urn:alm:descriptor:text' 
+        - description: Type to specify the Target of an access policy
+          displayName: Target
+          path: target
+          x-descriptors:
+            - 'urn:alm:descriptor:text'          
+      statusDescriptors:
+        - description: Detailed message on current status
+          displayName: Message
+          path: message
+          x-descriptors:
+            - 'urn:alm:descriptor:text'    
+        - description: Current state for the binding
+          displayName: State
+          path: state
+          x-descriptors:
+            - 'urn:alm:descriptor:text'
+        - description: Policy ID for the access policy
+          displayName: Policy ID
+          path: policyID
+          x-descriptors:
+            - 'urn:alm:descriptor:text'       
+        - description: Type to specify the Subject of an access policy
+          displayName: Subject
+          path: subject
+          x-descriptors:
+            - 'urn:alm:descriptor:text'   
+        - description: Type to specify a list of Roles of an access policy
+          displayName: Roles
+          path: roles
+          x-descriptors:
+            - 'urn:alm:descriptor:text' 
+        - description: Type to specify the Target of an access policy
+          displayName: Target
+          path: target
+          x-descriptors:
+            - 'urn:alm:descriptor:text'                          

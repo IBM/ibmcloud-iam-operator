@@ -1,0 +1,83 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessPolicy
+metadata:
+  name: cosuserpolicy
+spec:
+  subject:
+    userEmail: avarghese@us.ibm.com
+  roles:
+    definedRoles:
+      - Viewer
+      - Administrator
+  target:
+    resourceGroup: Default
+    serviceClass: cloud-object-storage
+    serviceID: 1cdd19ff-c033-4767-b6b7-4fe2fc58c6a1
+
+---    
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessPolicy
+metadata:
+  name: cosservicepolicy
+spec:
+  subject:
+    serviceID: ServiceId-fa27c539-a6cf-41d2-8cb0-2916da5f8e8a
+  roles:
+    definedRoles:
+      - Viewer
+      - Administrator
+  target:
+    resourceGroup: Default
+    serviceClass: cloud-object-storage
+    serviceID: 1cdd19ff-c033-4767-b6b7-4fe2fc58c6a1
+
+--- 
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessPolicy
+metadata:
+  name: cosgrouppolicy
+spec:
+  subject:
+    accessGroupID: AccessGroupId-4099639d-95d2-4d78-ae6b-536f3891953c
+  roles:
+    definedRoles:
+      - Viewer
+      - Administrator
+  target:
+    resourceGroup: Default
+    serviceClass: cloud-object-storage
+    serviceID: 1cdd19ff-c033-4767-b6b7-4fe2fc58c6a1
+
+---
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessGroup
+metadata:
+  name: cosnewgroup
+spec:
+  name: cosnewgroup
+  description: A new access group to test access group controller
+  userEmails:
+      - avarghese@us.ibm.com
+      - mvaziri@us.ibm.com
+  serviceIDs:
+    - ServiceId-3b9f026a-eb6e-495f-b104-95232d0c4a59
+    - ServiceId-fa27c539-a6cf-41d2-8cb0-2916da5f8e8a   
+
+--- 
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessPolicy
+metadata:
+  name: cosnewgrouppolicy
+spec:
+  subject:
+    accessGroupDef: 
+      accessGroupName: cosnewgroup
+      accessGroupNamespace: default
+  roles:
+    definedRoles:
+      - Viewer
+      - Administrator
+  target:
+    resourceGroup: Default
+    serviceClass: cloud-object-storage
+    serviceID: 1cdd19ff-c033-4767-b6b7-4fe2fc58c6a1

@@ -1,0 +1,51 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessGroup
+metadata:
+  name: demogroup
+spec:
+  name: demogroup
+  description: A new access group to provide customized admin acccess to an Event Streams topic
+  userEmails:
+      - avarghese@us.ibm.com
+      - mvaziri@us.ibm.com
+  serviceIDs:
+    - ServiceId-3b9f026a-eb6e-495f-b104-95232d0c4a59 
+
+---
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: CustomRole
+metadata:
+  name: democustomrole
+spec:
+  roleName: ESAdmin
+  serviceClass: messagehub
+  displayName: ES Admin
+  description: Event Streams admin has a subset of the privileges of an IAM defined Admin role, specific to Event streams service
+  actions: 
+    - iam.policy.create
+    - iam.policy.update
+    - messagehub.group.manage
+    - messagehub.topic.manage
+
+---
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessPolicy
+metadata:
+  name: demoaccesspolicy
+spec:
+  subject:
+    accessGroupDef: 
+      accessGroupName: demogroup
+      accessGroupNamespace: default
+  roles: 
+    definedRoles:
+      - Viewer
+    customRolesDef:
+      - customRoleName: democustomrole
+        customRoleNamespace: default
+  target: 
+    resourceGroup: Default    
+    serviceClass: messagehub
+    serviceID: 9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631
+    resourceName: topic
+    resourceID: topic-ansu    

@@ -1,0 +1,11 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessGroup
+metadata:
+  name: cosbadserviceaccessgroupmember
+spec:
+  name: cosbadserviceaccessgroupmember
+  description: A new access group to test access group controller
+  userEmails:
+    - avarghese@us.ibm.com
+  serviceIDs:
+    - ServiceId-12345

@@ -1,0 +1,15 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: CustomRole
+metadata:
+  name: coscustomrole
+spec:
+  roleName: COSAdmin
+  serviceClass: cloud-object-storage
+  displayName: Cos Admin
+  description: Cos admin is an admin that only has a subset of the privileges of an Admin role
+  actions: 
+    - iam.policy.create
+    - iam.policy.update
+    - cloud-object-storage.bucket.get
+    - cloud-object-storage.object.get
+    - cloud-object-storage.object.post

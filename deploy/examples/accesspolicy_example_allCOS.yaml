@@ -1,0 +1,14 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessPolicy
+metadata:
+  name: cospolicy-allcos
+spec:
+  subject:
+    accessGroupID: AccessGroupId-7bc31e5a-8241-4858-814e-2d431496f436
+  roles:
+    definedRoles:
+      - Viewer
+      - Administrator
+  target:
+    resourceGroup: Default
+    serviceClass: cloud-object-storage

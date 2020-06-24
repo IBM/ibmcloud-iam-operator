@@ -1,0 +1,17 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessPolicy
+metadata:
+  name: cosbaduser
+spec:
+  subject:
+    userEmail: ansu@us.ibm.com
+  roles:
+    definedRoles:
+      - Viewer
+      - Administrator
+  target:
+    resourceGroup: Default
+    serviceClass: cloud-object-storage
+    serviceID: 1cdd19ff-c033-4767-b6b7-4fe2fc58c6a1
+    resourceName: bucket
+    resourceID: cos-standard-ansu

@@ -1,0 +1,15 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessPolicy
+metadata:
+  name: cosbadresource
+spec:
+  subject:
+    serviceID: ServiceId-fa27c539-a6cf-41d2-8cb0-2916da5f8e8a
+  roles:
+    definedRoles:
+      - Viewer
+      - Administrator
+  target:
+    resourceGroup: Default
+    serviceClass: funny-storage-service
+    serviceID: 123456-7890

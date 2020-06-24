@@ -1,0 +1,13 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: CustomRole
+metadata:
+  name: cosuserrole
+spec:
+  roleName: CoAdmin
+  serviceClass: containers-kubernetes
+  displayName: Co Admin
+  description: Co admin is an admin that only has a subset of the privileges of an Admin role
+  actions: 
+    - iam.policy.create
+    - iam.policy.update
+    - containers-kubernetes.cluster.operate

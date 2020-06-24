@@ -1,0 +1,13 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: CustomRole
+metadata:
+  name: eventstreamscustomrole
+spec:
+  roleName: ESAdmin
+  serviceClass: messagehub
+  displayName: ES Admin
+  description: Event Streams admin is an admin that only has a subset of the privileges of an Admin role
+  actions: 
+    - iam.policy.create
+    - iam.policy.update
+    - messagehub.group.read

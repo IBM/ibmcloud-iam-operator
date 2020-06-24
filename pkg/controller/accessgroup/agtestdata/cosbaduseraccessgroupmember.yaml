@@ -1,0 +1,9 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessGroup
+metadata:
+  name: cosbaduseraccessgroupmember
+spec:
+  name: cosbaduseraccessgroupmember
+  description: A new access group to test access group controller
+  userEmails:
+    - ansu@us.ibm.com

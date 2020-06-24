@@ -1,0 +1,16 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessPolicy
+metadata:
+  name: mypolicy
+spec:
+  subject:   
+    accessGroupDef:
+      accessGroupName: mygroup
+      accessGroupNamespace: default
+  roles: 
+    customRolesDef:
+      - customRoleName: myrole
+        customRoleNamespace: default
+  target: 
+    resourceGroup: Default
+    serviceClass: messagehub

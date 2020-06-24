@@ -1,0 +1,124 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessPolicy
+metadata:
+  name: kubeclusterpolicy
+spec:
+  subject:
+    userEmail: mvaziri@us.ibm.com
+  roles:
+    definedRoles:
+      - Viewer
+      - Reader
+  target:
+    serviceClass: containers-kubernetes
+    serviceID: boq5g1vd037els3vogo0
+
+---
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessPolicy
+metadata:
+  name: kubedevnamespacepolicy
+spec:
+  subject:
+    userEmail: mvaziri@us.ibm.com
+  roles:
+    definedRoles:
+      - Editor
+  target:
+    serviceClass: containers-kubernetes
+    serviceID: boq5g1vd037els3vogo0    
+    resourceKey: namespace
+    resourceValue: dev
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  creationTimestamp: null
+  name: ibmcloud-iam-developer-edit-role
+  namespace: dev
+  labels:
+    app.kubernetes.io/name: ibmcloud-iam-operator   
+rules:
+- apiGroups:
+  - ibmcloud.ibm.com
+  resources:
+  - accesspolicies
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ibmcloud.ibm.com
+  resources:
+  - accesspolicies/finalizers
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ibmcloud.ibm.com
+  resources:
+  - accesspolicies/status
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ibmcloud.ibm.com
+  resources:
+  - '*'
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  creationTimestamp: null
+  name: ibmcloud-iam-developer-rolebinding
+  namespace: dev
+  labels:
+    app.kubernetes.io/name: ibmcloud-iam-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: ibmcloud-iam-developer-edit-role
+subjects:
+- kind: User
+  name: IAM#mvaziri@us.ibm.com
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  creationTimestamp: null
+  name: ibmcloud-iam-ibm-edit-rolebinding
+  namespace: dev
+  labels:
+    app.kubernetes.io/name: ibmcloud-iam-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- kind: User
+  name: IAM#mvaziri@us.ibm.com

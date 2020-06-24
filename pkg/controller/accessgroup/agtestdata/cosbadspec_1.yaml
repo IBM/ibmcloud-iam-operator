@@ -1,0 +1,7 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessGroup
+metadata:
+  name: cosbadspec-1
+spec:
+  name: cosbadspec-1
+  description: A new access group to test access group controller 

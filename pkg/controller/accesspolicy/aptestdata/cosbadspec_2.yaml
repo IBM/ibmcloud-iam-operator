@@ -1,0 +1,14 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AccessPolicy
+metadata:
+  name: cosbadspec-2
+spec:
+  subject:
+    userEmail: avarghese@us.ibm.com  
+    accessGroupID: AccessGroupId-4099639d-95d2-4d78-ae6b-536f3891953c
+  roles:
+    definedRoles:
+      - Viewer
+  target:
+    resourceGroup: Default
+    serviceClass: cloud-object-storage
