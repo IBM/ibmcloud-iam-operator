@@ -1,7 +1,7 @@
 package v1alpha1
 
 import (
-	resv1 "github.ibm.com/seed/ibmcloud-iam-operator/pkg/lib/resource/v1"
+	resv1 "github.com/IBM/ibmcloud-iam-operator/pkg/lib/resource/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 

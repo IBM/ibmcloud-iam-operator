@@ -65,7 +65,7 @@ Notice that the `org`must be included.
 To install the latest release of the IAM operator, run the following script:
 
 ```
-curl -sL https://raw.github.ibm.com/seed/ibmcloud-iam-operator/master/hack/install-operator.sh | bash 
+curl -sL https://raw.github.com/IBM/ibmcloud-iam-operator/master/hack/install-operator.sh | bash 
 ```
 
 The script above first creates an IBM Cloud API Key and stores it in a Kubernetes secret that can be
@@ -78,7 +78,7 @@ used to provision IBM Cloud Services; finally, it deploys the operator in your c
 To remove the operator, run the following script:
 
 ```
-curl -sL https://raw.github.ibm.com/seed/ibmcloud-iam-operator/master/hack/uninstall-operator.sh | bash 
+curl -sL https://raw.github.com/IBM/ibmcloud-iam-operator/master/hack/uninstall-operator.sh | bash 
 ```
 
 ## Using the IBM Cloud IAM Operator

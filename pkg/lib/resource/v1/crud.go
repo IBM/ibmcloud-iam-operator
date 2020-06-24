@@ -19,10 +19,10 @@ package v1
 import (
 	"fmt"
 
-	"github.ibm.com/seed/ibmcloud-iam-operator/pkg/lib/event"
+	"github.com/IBM/ibmcloud-iam-operator/pkg/lib/event"
 	"k8s.io/apimachinery/pkg/runtime"
 
-	rcontext "github.ibm.com/seed/ibmcloud-iam-operator/pkg/context"
+	rcontext "github.com/IBM/ibmcloud-iam-operator/pkg/context"
 )
 
 // PutAndEmit updates the object stus on the server and emits an event (on the same server) recording current object state

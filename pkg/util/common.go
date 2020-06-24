@@ -21,7 +21,7 @@ import (
 	"os"
 	"strings"
 
-	icv1 "github.ibm.com/seed/ibmcloud-iam-operator/pkg/lib/ibmcloud/v1"
+	icv1 "github.com/IBM/ibmcloud-iam-operator/pkg/lib/ibmcloud/v1"
 	
 	bx "github.com/IBM-Cloud/bluemix-go"
 	bxendpoints "github.com/IBM-Cloud/bluemix-go/endpoints"

@@ -21,7 +21,7 @@ RELEASE="latest/"
 
 which curl > /dev/null 2>&1 || (echo "Install curl first before running install-operator.sh" && exit 1)
 
-if ! curl -s https://github.ibm.com/ > /dev/null
+if ! curl -s https://github.com/ > /dev/null
 then
   echo "GitHub is down, or having issues. You won't be able to pull the master.zip from the repository."
   exit 1
@@ -34,7 +34,7 @@ if [ -z ${BASH_SOURCE} ]; then
   echo "* Downloading install yaml..."
   rm -rf /tmp/ibmcloud-iam-operator && mkdir -p /tmp/ibmcloud-iam-operator
   cd /tmp/ibmcloud-iam-operator
-  curl -sLJO https://github.ibm.com/seed/ibmcloud-iam-operator/tree/master/releases/latest/master.zip
+  curl -sLJO https://github.com/IBM/ibmcloud-iam-operator/tree/master/releases/latest/master.zip
   unzip -qq master.zip
   cd ibmcloud-iam-operator-master
   SCRIPTS_HOME=${PWD}/hack

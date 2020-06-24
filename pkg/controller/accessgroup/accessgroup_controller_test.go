@@ -36,11 +36,11 @@ import (
 	. "github.com/onsi/ginkgo/extensions/table"
 	. "github.com/onsi/gomega"
 
-	context "github.ibm.com/seed/ibmcloud-iam-operator/pkg/context"
-	resv1 "github.ibm.com/seed/ibmcloud-iam-operator/pkg/lib/resource/v1"
+	context "github.com/IBM/ibmcloud-iam-operator/pkg/context"
+	resv1 "github.com/IBM/ibmcloud-iam-operator/pkg/lib/resource/v1"
 
-	"github.ibm.com/seed/ibmcloud-iam-operator/pkg/apis"
-	test "github.ibm.com/seed/ibmcloud-iam-operator/test"
+	"github.com/IBM/ibmcloud-iam-operator/pkg/apis"
+	test "github.com/IBM/ibmcloud-iam-operator/test"
 )
 
 var (

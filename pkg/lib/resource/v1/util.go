@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.ibm.com/seed/ibmcloud-iam-operator/pkg/util"
+	"github.com/IBM/ibmcloud-iam-operator/pkg/util"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )

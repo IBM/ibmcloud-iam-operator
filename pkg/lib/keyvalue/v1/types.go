@@ -24,9 +24,9 @@ import (
 	"k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 
-	rcontext "github.ibm.com/seed/ibmcloud-iam-operator/pkg/context"
-	"github.ibm.com/seed/ibmcloud-iam-operator/pkg/lib/secret"
-	"github.ibm.com/seed/ibmcloud-iam-operator/pkg/util"
+	rcontext "github.com/IBM/ibmcloud-iam-operator/pkg/context"
+	"github.com/IBM/ibmcloud-iam-operator/pkg/lib/secret"
+	"github.com/IBM/ibmcloud-iam-operator/pkg/util"
 )
 
 // KeyValue represents a key-value pair

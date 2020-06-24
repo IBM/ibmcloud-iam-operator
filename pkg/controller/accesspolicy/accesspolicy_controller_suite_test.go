@@ -21,7 +21,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.ibm.com/seed/ibmcloud-iam-operator/pkg/apis"
+	"github.com/IBM/ibmcloud-iam-operator/pkg/apis"
 	"github.com/onsi/gomega"
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"

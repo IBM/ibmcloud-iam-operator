@@ -24,9 +24,9 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.ibm.com/seed/ibmcloud-iam-operator/pkg/apis/ibmcloud/v1alpha1"
+	v1alpha1 "github.com/IBM/ibmcloud-iam-operator/pkg/apis/ibmcloud/v1alpha1"
 
-	rcontext "github.ibm.com/seed/ibmcloud-iam-operator/pkg/context"
+	rcontext "github.com/IBM/ibmcloud-iam-operator/pkg/context"
 )
 
 // PostInNs the object

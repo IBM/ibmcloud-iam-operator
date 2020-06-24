@@ -22,8 +22,8 @@ import (
 	"net/http"
 	"strings"
 
-	context "github.ibm.com/seed/ibmcloud-iam-operator/pkg/context"
-	"github.ibm.com/seed/ibmcloud-iam-operator/pkg/lib/secret"
+	context "github.com/IBM/ibmcloud-iam-operator/pkg/context"
+	"github.com/IBM/ibmcloud-iam-operator/pkg/lib/secret"
 )
 
 // ContentReader is an agnostic util reader to fetch content from web or local path or potentially other places.

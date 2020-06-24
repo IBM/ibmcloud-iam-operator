@@ -1,4 +1,4 @@
-module github.ibm.com/seed/ibmcloud-iam-operator
+module github.com/IBM/ibmcloud-iam-operator
 
 go 1.13
 

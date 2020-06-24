@@ -23,7 +23,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/runtime/log"
 
-	rcontext "github.ibm.com/seed/ibmcloud-iam-operator/pkg/context"
+	rcontext "github.com/IBM/ibmcloud-iam-operator/pkg/context"
 )
 
 var slog = log.Log.WithName("configmap")

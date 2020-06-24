@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.ibm.com/seed/ibmcloud-iam-operator/pkg/controller/accesspolicy"
+	"github.com/IBM/ibmcloud-iam-operator/pkg/controller/accesspolicy"
 )
 
 func init() {

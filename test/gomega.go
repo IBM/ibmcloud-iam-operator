@@ -23,8 +23,8 @@ import (
 
 	Ω "github.com/onsi/gomega"
 
-	context "github.ibm.com/seed/ibmcloud-iam-operator/pkg/context"
-	resv1 "github.ibm.com/seed/ibmcloud-iam-operator/pkg/lib/resource/v1"
+	context "github.com/IBM/ibmcloud-iam-operator/pkg/context"
+	resv1 "github.com/IBM/ibmcloud-iam-operator/pkg/lib/resource/v1"
 )
 
 // StartTestManager starts the manager

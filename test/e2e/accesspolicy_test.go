@@ -20,8 +20,8 @@ import (
 	"testing"
 	"time"
 
-	"github.ibm.com/seed/ibmcloud-iam-operator/pkg/apis"
-	operator "github.ibm.com/seed/ibmcloud-iam-operator/pkg/apis/ibmcloud/v1alpha1"
+	"github.com/IBM/ibmcloud-iam-operator/pkg/apis"
+	operator "github.com/IBM/ibmcloud-iam-operator/pkg/apis/ibmcloud/v1alpha1"
 
 	
 	framework "github.com/operator-framework/operator-sdk/pkg/test"

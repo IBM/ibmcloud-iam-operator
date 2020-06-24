@@ -20,7 +20,7 @@ import (
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	rcontext "github.ibm.com/seed/ibmcloud-iam-operator/pkg/context"
+	rcontext "github.com/IBM/ibmcloud-iam-operator/pkg/context"
 )
 
 // CreateEvent takes the representation of a event and creates it.

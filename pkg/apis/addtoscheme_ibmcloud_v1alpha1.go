@@ -17,7 +17,7 @@
 package apis
 
 import (
-	"github.ibm.com/seed/ibmcloud-iam-operator/pkg/apis/ibmcloud/v1alpha1"
+	"github.com/IBM/ibmcloud-iam-operator/pkg/apis/ibmcloud/v1alpha1"
 )
 
 func init() {

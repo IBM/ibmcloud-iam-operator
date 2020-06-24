@@ -23,8 +23,8 @@ import (
 	"time"
 	"errors"
 
-	ibmcloudv1alpha1 "github.ibm.com/seed/ibmcloud-iam-operator/pkg/apis/ibmcloud/v1alpha1"
-	common "github.ibm.com/seed/ibmcloud-iam-operator/pkg/util"
+	ibmcloudv1alpha1 "github.com/IBM/ibmcloud-iam-operator/pkg/apis/ibmcloud/v1alpha1"
+	common "github.com/IBM/ibmcloud-iam-operator/pkg/util"
 
  	"github.com/IBM-Cloud/bluemix-go/api/account/accountv1"
 	"github.com/IBM-Cloud/bluemix-go/api/account/accountv2"
