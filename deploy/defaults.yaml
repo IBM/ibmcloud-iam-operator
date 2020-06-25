@@ -14,10 +14,10 @@ crd:
             "name": "mygroup"
             },
             "spec": {
-            "name": "ESAccessGroup",
-            "description": "A new access group to test access group controller",
-            "userEmails": "avarghese@us.ibm.com",
-            "serviceIDs": "ServiceId-3b9f026a-eb6e-495f-b104-95232d0c4a59"
+              "name": "MyAccessGroup",
+              "description": "A new access group to test access group controller",
+              "userEmails": ["avarghese@us.ibm.com"],
+              "serviceIDs": ["ServiceId-3b9f026a-eb6e-495f-b104-95232d0c4a59","ServiceId-fa27c539-a6cf-41d2-8cb0-2916da5f8e8a"]
             }
         }
       resources:
@@ -93,11 +93,11 @@ crd:
             "name": "myrole"
             },
             "spec": {
-            "roleName": "ESAdmin",
-            "serviceClass": "messagehub",
-            "displayName": "ES Admin",
-            "description": "Event Streams admin is an admin that only has a subset of the privileges of an Admin role",
-            "actions": "iam.policy.create"
+              "roleName": "MyAdmin",
+              "serviceClass": "messagehub",
+              "displayName": "My Admin",
+              "description": "My admin only has a subset of the privileges of an IAM Admin role",
+              "actions": ["iam.policy.create","iam.policy.update","messagehub.group.read"]
             }
         }
       resources:
@@ -189,16 +189,23 @@ crd:
             },
             "spec": {
             "subject": {   
-            "userEmail": "avarghese@us.ibm.com"
+              "accessGroupDef": {
+                "accessGroupName": "mygroup",
+                "accessGroupNamespace": "default"
+              }
             },
             "roles": {
-              "definedRoles": "Viewer"
+              "definedRoles": ["Viewer","Administrator"],
+              "customRolesDef": {
+                "customRoleName": "myrole",
+                "customRoleNamespace": "default"
+              }
             },
             "target": { 
-            "resourceGroup": "Default",
-            "serviceClass": "messagehub",
-            "serviceID": "9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631"
-            }
+              "resourceGroup": "Default",
+              "serviceClass": "messagehub",
+              "serviceID": "9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631"
+              }
             }
         }
       resources:

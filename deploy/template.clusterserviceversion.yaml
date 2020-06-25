@@ -108,7 +108,7 @@ spec:
         NAME                 STATUS   AGE
         cosuserpolicy        Online   25s
 
-    Here's another example to create all three custom resources: You can create an access policy with name `demonewgrouppolicy` for access group resource `demonewgroup` in namespace `default` to access an Event Stream instance's topic `topic-ansu` as a custom role `ES Admin` that is running in the cluster as a custom role resource `democustomrole` in namespace `default` using the following yaml file [`accesspolicy_example_EventStreams_demo.yaml`](deploy/examples/accesspolicy_example_EventStreams_demo.yaml) :
+    Here's another example to create all three custom resources: You can create an access policy with name `demonewgrouppolicy` for access group resource `demonewgroup` in namespace `default` to access an Event Stream instance's topic `topic-ansu` as a custom role `ES Admin` that is running in the cluster as a custom role resource `democustomrole` in namespace `default` using the following yaml file [`accesspolicy_example_EventStreams_demo.yaml`](https://github.com/IBM/ibmcloud-iam-operator/blob/master/deploy/examples/accesspolicy_example_EventStreams_demo.yaml) :
 
         apiVersion: ibmcloud.ibm.com/v1alpha1
         kind: AccessGroup

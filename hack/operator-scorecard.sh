@@ -31,9 +31,9 @@ TEST_DEPLOY_DIR=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 
 echo "Copying artifacts in $TEST_DEPLOY_DIR ..."
 mkdir -p ${TEST_DEPLOY_DIR}/deploy/crds
-cp ${SCRIPTS_HOME}/../deploy/crds/ibmcloud.ibm.com_v1alpha1_accessgroup.yaml ${TEST_DEPLOY_DIR}/deploy/crds/ibmcloud.ibm.com_v1alpha1_accessgroup_crd.yaml
-cp ${SCRIPTS_HOME}/../deploy/crds/ibmcloud.ibm.com_v1alpha1_customrole.yaml ${TEST_DEPLOY_DIR}/deploy/crds/ibmcloud.ibm.com_v1alpha1_customrole_crd.yaml
-cp ${SCRIPTS_HOME}/../deploy/crds/ibmcloud.ibm.com_v1alpha1_accesspolicy.yaml ${TEST_DEPLOY_DIR}/deploy/crds/ibmcloud.ibm.com_v1alpha1_accesspolicy_crd.yaml
+cp ${SCRIPTS_HOME}/../deploy/crds/ibmcloud.ibm.com_v1alpha1_accessgroup_crd.yaml ${TEST_DEPLOY_DIR}/deploy/crds/ibmcloud.ibm.com_v1alpha1_accessgroup_crd.yaml
+cp ${SCRIPTS_HOME}/../deploy/crds/ibmcloud.ibm.com_v1alpha1_customrole_crd.yaml ${TEST_DEPLOY_DIR}/deploy/crds/ibmcloud.ibm.com_v1alpha1_customrole_crd.yaml
+cp ${SCRIPTS_HOME}/../deploy/crds/ibmcloud.ibm.com_v1alpha1_accesspolicy_crd.yaml ${TEST_DEPLOY_DIR}/deploy/crds/ibmcloud.ibm.com_v1alpha1_accesspolicy_crd.yaml
 cp ${SCRIPTS_HOME}/../deploy/examples/ibmcloud.ibm.com_v1alpha1_accessgroup_cr.yaml ${TEST_DEPLOY_DIR}/deploy/crds/accessgroup_cr.yaml
 cp ${SCRIPTS_HOME}/../deploy/examples/ibmcloud.ibm.com_v1alpha1_customrole_cr.yaml ${TEST_DEPLOY_DIR}/deploy/crds/customrole_cr.yaml 
 cp ${SCRIPTS_HOME}/../deploy/examples/ibmcloud.ibm.com_v1alpha1_accesspolicy_cr.yaml ${TEST_DEPLOY_DIR}/deploy/crds/accesspolicy_cr.yaml 
@@ -46,7 +46,7 @@ cp ${SCRIPTS_HOME}/../releases/latest/*_operator.yaml ${TEST_DEPLOY_DIR}/deploy/
 cp ${SCRIPTS_HOME}/../olm/${TAG}/ibmcloud_iam_operator.v${TAG}.clusterserviceversion.yaml ${TEST_DEPLOY_DIR}/deploy/ibmcloud_iam_operator.v${TAG}.clusterserviceversion.yaml
 
 # get namespace to use
-NS=$(cat ${SCRIPTS_HOME}/../releases/latest/*operator.yaml | grep namespace | awk '{print $2}')
+NS=$(cat ${SCRIPTS_HOME}/../releases/latest/*operator.yaml | grep namespace: | awk '{print $2}')
 
 # create the scorecard config file
 cat > ${TEST_DEPLOY_DIR}/.osdk-scorecard.yaml <<EOS

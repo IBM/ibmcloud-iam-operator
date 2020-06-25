@@ -3,12 +3,12 @@ kind: ClusterServiceVersion
 metadata:
   annotations:
     alm-examples: |-
-      [{"apiVersion": "ibmcloud.ibm.com/v1alpha1", "kind": "AccessGroup", "metadata": {"name": "mygroup"}, "spec": {"name": "ESAccessGroup", "description": "A new access group to test access group controller", "userEmails": "avarghese@us.ibm.com", "serviceIDs": "ServiceId-3b9f026a-eb6e-495f-b104-95232d0c4a59"}}, {"apiVersion": "ibmcloud.ibm.com/v1alpha1", "kind": "CustomRole", "metadata": {"name": "myrole"}, "spec": {"roleName": "ESAdmin", "serviceClass": "messagehub", "displayName": "ES Admin", "description": "Event Streams admin is an admin that only has a subset of the privileges of an Admin role", "actions": "iam.policy.create"}}, {"apiVersion": "ibmcloud.ibm.com/v1alpha1", "kind": "AccessPolicy", "metadata": {"name": "mypolicy"}, "spec": {"subject": {"userEmail": "avarghese@us.ibm.com"}, "roles": {"definedRoles": "Viewer"}, "target": {"resourceGroup": "Default", "serviceClass": "messagehub", "serviceID": "9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631"}}}]
+      [{"apiVersion": "ibmcloud.ibm.com/v1alpha1", "kind": "AccessGroup", "metadata": {"name": "mygroup"}, "spec": {"name": "MyAccessGroup", "description": "A new access group to test access group controller", "userEmails": ["avarghese@us.ibm.com"], "serviceIDs": ["ServiceId-3b9f026a-eb6e-495f-b104-95232d0c4a59", "ServiceId-fa27c539-a6cf-41d2-8cb0-2916da5f8e8a"]}}, {"apiVersion": "ibmcloud.ibm.com/v1alpha1", "kind": "CustomRole", "metadata": {"name": "myrole"}, "spec": {"roleName": "MyAdmin", "serviceClass": "messagehub", "displayName": "My Admin", "description": "My admin only has a subset of the privileges of an IAM Admin role", "actions": ["iam.policy.create", "iam.policy.update", "messagehub.group.read"]}}, {"apiVersion": "ibmcloud.ibm.com/v1alpha1", "kind": "AccessPolicy", "metadata": {"name": "mypolicy"}, "spec": {"subject": {"accessGroupDef": {"accessGroupName": "mygroup", "accessGroupNamespace": "default"}}, "roles": {"definedRoles": ["Viewer", "Administrator"], "customRolesDef": {"customRoleName": "myrole", "customRoleNamespace": "default"}}, "target": {"resourceGroup": "Default", "serviceClass": "messagehub", "serviceID": "9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631"}}}]
     capabilities: Basic Install
     categories: Cloud Provider
     certified: 'false'
     containerImage: cloudoperators/ibmcloud-iam-operator:0.1.0
-    createdAt: '2020-06-24T15:43:55Z'
+    createdAt: '2020-06-25T12:58:34Z'
     description: The IBM Cloud IAM Operator provides a set of three Kubernetes CRD-Based
       APIs to manage the lifecycle of Access Policies, Access Groups, and Custom Roles
       on IAM for IBM public cloud.
@@ -287,7 +287,7 @@ spec:
     \ in namespace `default` to access an Event Stream instance's topic `topic-ansu`\
     \ as a custom role `ES Admin` that is running in the cluster as a custom role\
     \ resource `democustomrole` in namespace `default` using the following yaml file\
-    \ [`accesspolicy_example_EventStreams_demo.yaml`](deploy/examples/accesspolicy_example_EventStreams_demo.yaml)\
+    \ [`accesspolicy_example_EventStreams_demo.yaml`](https://github.com/IBM/ibmcloud-iam-operator/blob/master/deploy/examples/accesspolicy_example_EventStreams_demo.yaml)\
     \ :\n\n    apiVersion: ibmcloud.ibm.com/v1alpha1\n    kind: AccessGroup\n    metadata:\n\
     \      name: demonewgroup\n    spec:\n      name: demonewgroup\n      description:\
     \ A new access group to test access group controller\n      userEmails:\n    \

@@ -1,9 +1,9 @@
 apiVersion: ibmcloud.ibm.com/v1alpha1
 kind: AccessGroup
 metadata:
-  name: demogroup
+  name: demonewgroup
 spec:
-  name: demogroup
+  name: demonewgroup
   description: A new access group to provide customized admin acccess to an Event Streams topic
   userEmails:
       - avarghese@us.ibm.com
@@ -35,7 +35,7 @@ metadata:
 spec:
   subject:
     accessGroupDef: 
-      accessGroupName: demogroup
+      accessGroupName: demonewgroup
       accessGroupNamespace: default
   roles: 
     definedRoles:

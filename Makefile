@@ -74,3 +74,12 @@ release: check-tag
 # make a future release for olm and releases
 release-update: check-tag
 	python hack/package.py v${TAG} --is_update
+
+# Generate code
+generate:
+	go generate ./pkg/... ./cmd/...
+	hack/update-codegen.sh
+
+# Run the operator-sdk scorecard on latest release
+scorecard:
+	hack/operator-scorecard.sh 
