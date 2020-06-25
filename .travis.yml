@@ -23,14 +23,14 @@ before_install:
 
 stages:
   - test
-  - deploy
+#  - deploy
 
 jobs:
   include:    
     - stage: test
       script:
         - make codegen unittest e2etest
-    - stage: deploy
-      script:
-        - make build
-      if: branch = master
+  #  - stage: deploy 
+  #    script:
+  #      - make build
+  #    if: branch = master 

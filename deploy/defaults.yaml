@@ -32,22 +32,22 @@ crd:
           displayName: Description
           path: description
           x-descriptors:
-            - 'urn:alm:descriptor:text'
+            - 'urn:alm:descriptor:com.tectonic.ui:text'
         - description: Name of the new access group to be created
           displayName: Name
           path: name
           x-descriptors:
-            - 'urn:alm:descriptor:text'   
+            - 'urn:alm:descriptor:com.tectonic.ui:text'  
         - description: IAM IDs of Services that will be members of this new group
           displayName: Service IDs
           path: serviceIDs
           x-descriptors:
-            - 'urn:alm:descriptor:text'  
+            - 'urn:alm:descriptor:com.tectonic.ui:text'  
         - description: Email IDs of the IAM Users who will be members of this new group
           displayName: User Emails
           path: userEmails
           x-descriptors:
-            - 'urn:alm:descriptor:text' 
+            - 'urn:alm:descriptor:com.tectonic.ui:text'
       statusDescriptors:
         - description: Detailed message on current status
           displayName: Message
@@ -64,22 +64,22 @@ crd:
           path: groupID
           x-descriptors:
             - 'urn:alm:descriptor:text' 
-        - description: Description for the new access group
+        - description: Description for the new access group (Status)
           displayName: Description
           path: description
           x-descriptors:
             - 'urn:alm:descriptor:text'
-        - description: Name of the new access group to be created
+        - description: Name of the new access group to be created (Status)
           displayName: Name
           path: name
           x-descriptors:
             - 'urn:alm:descriptor:text'   
-        - description: IAM IDs of Services that will be members of this new group
+        - description: IAM IDs of Services that will be members of this new group (Status)
           displayName: Service IDs
           path: serviceIDs
           x-descriptors:
             - 'urn:alm:descriptor:text'  
-        - description: Email IDs of the IAM Users who will be members of this new group
+        - description: Email IDs of the IAM Users who will be members of this new group (Status)
           displayName: User Emails
           path: userEmails
           x-descriptors:
@@ -112,27 +112,27 @@ crd:
           displayName: Role Name
           path: roleName
           x-descriptors:
-            - 'urn:alm:descriptor:text'
+            - 'urn:alm:descriptor:com.tectonic.ui:text'
         - description: Display name of the new custom role to be created
           displayName: Display Name
           path: displayName
           x-descriptors:
-            - 'urn:alm:descriptor:text'    
+            - 'urn:alm:descriptor:com.tectonic.ui:text'    
         - description: Name of the IBM Cloud service that is linked to this new role
           displayName: Service Class
           path: serviceClass
           x-descriptors:
-            - 'urn:alm:descriptor:text' 
+            - 'urn:alm:descriptor:com.tectonic.ui:text'
         - description: Description for this new custom role
           displayName: Description
           path: description
           x-descriptors:
-            - 'urn:alm:descriptor:text' 
+            - 'urn:alm:descriptor:com.tectonic.ui:text'
         - description: List of actions that this role can perform (IAM actions as well as actions available for the service specified in ServiceClass
           displayName: Actions
           path: actions
           x-descriptors:
-            - 'urn:alm:descriptor:text'             
+            - 'urn:alm:descriptor:com.tectonic.ui:text'             
       statusDescriptors:
         - description: Detailed message on current status
           displayName: Message
@@ -154,27 +154,27 @@ crd:
           path: roleCRN
           x-descriptors:
             - 'urn:alm:descriptor:text'  
-        - description: Name of the new custom role to be created
+        - description: Name of the new custom role to be created (Status)
           displayName: Role Name
           path: roleName
           x-descriptors:
             - 'urn:alm:descriptor:text'
-        - description: Display name of the new custom role to be created
+        - description: Display name of the new custom role to be created (Status)
           displayName: Display Name
           path: displayName
           x-descriptors:
             - 'urn:alm:descriptor:text'    
-        - description: Name of the IBM Cloud service that is linked to this new role
+        - description: Name of the IBM Cloud service that is linked to this new role (Status)
           displayName: Service Class
           path: serviceClass
           x-descriptors:
             - 'urn:alm:descriptor:text' 
-        - description: Description for this new custom role
+        - description: Description for this new custom role (Status)
           displayName: Description
           path: description
           x-descriptors:
             - 'urn:alm:descriptor:text' 
-        - description: List of actions that this role can perform (IAM actions as well as actions available for the service specified in ServiceClass
+        - description: List of actions that this role can perform (IAM actions as well as actions available for the service specified in ServiceClass (Status)
           displayName: Actions
           path: actions
           x-descriptors:
@@ -196,15 +196,17 @@ crd:
             },
             "roles": {
               "definedRoles": ["Viewer","Administrator"],
-              "customRolesDef": {
+              "customRolesDef": [{
                 "customRoleName": "myrole",
-                "customRoleNamespace": "default"
-              }
+                "customRoleNamespace": "default"}
+              ]
             },
             "target": { 
               "resourceGroup": "Default",
               "serviceClass": "messagehub",
-              "serviceID": "9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631"
+              "serviceID": "9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631",
+              "resourceName": "topic",
+              "resourceID": "topic-ansu"
               }
             }
         }
@@ -220,17 +222,17 @@ crd:
           displayName: Subject
           path: subject
           x-descriptors:
-            - 'urn:alm:descriptor:text'   
+            - 'urn:alm:descriptor:com.tectonic.ui:text' 
         - description: Type to specify a list of Roles of an access policy
           displayName: Roles
           path: roles
           x-descriptors:
-            - 'urn:alm:descriptor:text' 
+            - 'urn:alm:descriptor:com.tectonic.ui:text'
         - description: Type to specify the Target of an access policy
           displayName: Target
           path: target
           x-descriptors:
-            - 'urn:alm:descriptor:text'          
+            - 'urn:alm:descriptor:com.tectonic.ui:text'       
       statusDescriptors:
         - description: Detailed message on current status
           displayName: Message
@@ -247,17 +249,17 @@ crd:
           path: policyID
           x-descriptors:
             - 'urn:alm:descriptor:text'       
-        - description: Type to specify the Subject of an access policy
+        - description: Type to specify the Subject of an access policy (Status)
           displayName: Subject
           path: subject
           x-descriptors:
             - 'urn:alm:descriptor:text'   
-        - description: Type to specify a list of Roles of an access policy
+        - description: Type to specify a list of Roles of an access policy (Status)
           displayName: Roles
           path: roles
           x-descriptors:
             - 'urn:alm:descriptor:text' 
-        - description: Type to specify the Target of an access policy
+        - description: Type to specify the Target of an access policy (Status)
           displayName: Target
           path: target
           x-descriptors:

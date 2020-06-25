@@ -13,7 +13,7 @@ codegen:
 .PHONY: build
 build: 
 	operator-sdk build ${IMG}:${TAG}
-	docker push ${IMG}:${TAG}
+	#docker push ${IMG}:${TAG}
 
 .PHONY: run
 run:
