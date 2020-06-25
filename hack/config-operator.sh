@@ -19,7 +19,7 @@ set -e
 
 if [[ -z "${IC_APIKEY}" ]]; then
   echo "*** Generating new APIKey"
-  IC_APIKEY=$(ibmcloud iam api-key-create icop-key -d "Key for IBM Cloud Operator" | grep "API Key" | awk '{ print $3 }')
+  IC_APIKEY=$(ibmcloud iam api-key-create icop-key -d "Key for IBM Cloud IAM Operator" | grep "API Key" | awk '{ print $3 }')
 fi
 IC_TARGET=$(ibmcloud target) \
 IC_ORG=$(echo "$IC_TARGET" | grep Org | awk '{print $2}')  \
@@ -33,21 +33,15 @@ B64_REGION=$(echo -n $IC_REGION | base64)
 IC_GROUP_QUERY=$(ibmcloud resource group "$IC_GROUP") \
 IC_GROUP_ID=$(echo "$IC_GROUP_QUERY" | grep ID | grep -v Account | awk '{print $2}')
 
-if [ "$#" -ne 1 ]; then
-  NAMESPACE=default
-else
-  NAMESPACE=$1
-fi
-
 cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: Secret
 metadata:
-  name: ${NAMESPACE}-secret-ibmcloud-iam-operator
+  name: secret-ibmcloud-iam-operator
   labels:
     seed.ibm.com/ibmcloud-token: "apikey"
     app.kubernetes.io/name: ibmcloud-iam-operator
-  namespace: safe
+  namespace: default
 type: Opaque
 data:
   api-key: $B64_APIKEY
@@ -58,8 +52,8 @@ cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ${NAMESPACE}-config-ibmcloud-iam-operator
-  namespace: safe
+  name: config-ibmcloud-iam-operator
+  namespace: default
   labels:
     app.kubernetes.io/name: ibmcloud-iam-operator
 data:
@@ -69,16 +63,4 @@ data:
   resourcegroupid: "${IC_GROUP_ID}"
   space: "${IC_SPACE}"
   user: "${IC_USER}"
-EOF
-
-cat <<EOF | kubectl apply -f -
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: ibmcloud-iam-operator
-  namespace: ibmcloud-iam-operators
-  labels:
-    app.kubernetes.io/name: ibmcloud-iam-operator
-data:
-  namespace: safe
 EOF

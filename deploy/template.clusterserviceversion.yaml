@@ -61,21 +61,15 @@ spec:
  
         ibmcloud target -g <resource-group>
 
-    ## Installing the IBM Cloud IAM Operator
+    you can then configure the operator running the following script:
 
-    To install the latest release of the IAM operator, run the following script:
-
-        curl -sL https://raw.githubusercontent.com/IBM/ibmcloud-iam-operator/master/hack/install-operator.sh | bash 
-
-    The script above first creates an IBM Cloud API Key and stores it in a Kubernetes secret that can be
-    accessed by the operator, then it sets defaults such as the default resource group and region 
-    used to provision IBM Cloud Services; finally, it deploys the operator in your cluster.
-
-    ## Removing the IBM Cloud IAM Operator
-
-    To remove the operator, run the following script:
-
-        curl -sL https://raw.githubusercontent.com/IBM/ibmcloud-iam-operator/master/hack/uninstall-operator.sh | bash 
+        curl -sL https://raw.githubusercontent.com/IBM/ibmcloud-iam-operator/master/hack/config-operator.sh | bash 
+    
+    The script above creates an IBM Cloud API Key and stores it in a Kubernetes secret that can be
+    accessed by the operator, and it sets defaults such as the resource group and region 
+    used to provision IBM Cloud Services. You can always override the defaults in the custom resources.
+    If you prefer to create the secret and the defaults manually,
+    consult the [IBM Cloud IAM Operator documentation](https://github.com/IBM/ibmcloud-iam-operator).
 
     ## Creating an Access Group, Custom Role or Access Policy
 

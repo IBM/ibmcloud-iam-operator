@@ -34,16 +34,13 @@ if [ -z ${BASH_SOURCE} ]; then
   echo "* Downloading install yaml..."
   rm -rf /tmp/ibmcloud-iam-operator && mkdir -p /tmp/ibmcloud-iam-operator
   cd /tmp/ibmcloud-iam-operator
-  curl -sLJO https://github.com/IBM/ibmcloud-iam-operator/tree/master/releases/latest/master.zip
-  unzip -qq master.zip
+  curl -sLJO https://github.com/IBM/ibmcloud-iam-operator/archive/master.zip
+  unzip -qq ibmcloud-iam-operator-master.zip
   cd ibmcloud-iam-operator-master
   SCRIPTS_HOME=${PWD}/hack
 else
   SCRIPTS_HOME=$(dirname ${BASH_SOURCE})
 fi
-
-# create the namespaces needed
-kubectl apply -f ${SCRIPTS_HOME}/../releases/${RELEASE}/000_namespace.yaml
 
 # configure the operator
 ${SCRIPTS_HOME}/config-operator.sh

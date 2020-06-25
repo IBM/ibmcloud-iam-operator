@@ -60,14 +60,14 @@ This will use the IBM Cloud ResourceGroup `default`. To specify a different Reso
 ibmcloud target -g <resource-group>
 ```
 
-Notice that the `org`must be included.
+Notice that the `org` and `space` must be included, even if no Cloud Foundry services will be instantiated.
 
 ## Installing the IBM Cloud IAM Operator
 
 To install the latest release of the IAM operator, run the following script:
 
 ```
-curl -sL https://raw.github.com/IBM/ibmcloud-iam-operator/master/hack/install-operator.sh | bash 
+curl -sL https://raw.githubusercontent.com/IBM/ibmcloud-iam-operator/master/hack/install-operator.sh | bash  
 ```
 
 The script above first creates an IBM Cloud API Key and stores it in a Kubernetes secret that can be
@@ -80,7 +80,7 @@ used to provision IBM Cloud Services; finally, it deploys the operator in your c
 To remove the operator, run the following script:
 
 ```
-curl -sL https://raw.github.com/IBM/ibmcloud-iam-operator/master/hack/uninstall-operator.sh | bash 
+curl -sL https://raw.githubusercontent.com/IBM/ibmcloud-iam-operator/master/hack/uninstall-operator.sh | bash 
 ```
 
 ## Using the IBM Cloud IAM Operator
@@ -362,7 +362,10 @@ You can find [additional samples here.](deploy/examples)
 
 ```make e2etest```
 
-## Impact Statement
+## Learn more about how to contribute
 
+- [contributions](./CONTRIBUTING.md)
+
+## Impact Statement
 
 Operators are a cornerstone of OpenShift v4, and a key element of the OpenShift developer catalog and DevX. By advancing Operators technology, we expect to further reduce friction for developers and increase IBM Cloud Adoption, therefore having a direct impact on the IBM / Red Hat synergy.
