@@ -41,7 +41,7 @@ if args.version == None:
 
 def rename_crd(crdname):
     tk = re.split('[_.]', crdname)
-    return tk[1]+"_iam_operator_"+tk[4]+"_"+tk[5]+".crd.yaml"
+    return tk[1]+"_iam_operator_"+tk[4]+".crd.yaml"
 
 def find_deployment(source):
     for filename in os.listdir(source):
@@ -185,7 +185,7 @@ if args.is_update:
 # iterate sources
 for filename in os.listdir(releases):
     # we want only crds
-    if (filename.find("v1alpha1")<0):
+    if (filename.find("ibmcloud")<0):
         continue
     shutil.copyfile(os.path.join(releases,filename),os.path.join(olm,rename_crd(filename)))
 
@@ -241,7 +241,7 @@ with open(os.path.join(config,"template.clusterserviceversion.yaml"), 'r') as st
     crdmap = {}
     for filename in os.listdir(releases):
         # we want only crds
-        if (filename.find("v1alpha1")<0):
+        if (filename.find("ibmcloud")<0):
             continue
         # load yaml
         with open(os.path.join(releases,filename), 'r') as crdstream:

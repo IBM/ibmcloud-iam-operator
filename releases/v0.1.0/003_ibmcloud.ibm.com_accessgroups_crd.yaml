@@ -57,7 +57,7 @@ spec:
         status:
           description: AccessGroupStatus defines the observed state of AccessGroup
           properties:
-            groupID:
+            GroupID:
               type: string
             description:
               type: string

@@ -13,7 +13,7 @@ codegen:
 .PHONY: build
 build: 
 	operator-sdk build ${IMG}:${TAG}
-	#docker push ${IMG}:${TAG}
+	docker push ${IMG}:${TAG}
 
 .PHONY: run
 run:
@@ -23,9 +23,9 @@ run:
 install: 
 	kubectl apply -f deploy/namespace.yaml
 	hack/config-operator.sh
-	kubectl apply -f deploy/crds/ibmcloud.ibm.com_v1alpha1_accesspolicy_crd.yaml
-	kubectl apply -f deploy/crds/ibmcloud.ibm.com_v1alpha1_accessgroup_crd.yaml
-	kubectl apply -f deploy/crds/ibmcloud.ibm.com_v1alpha1_customrole_crd.yaml
+	kubectl apply -f deploy/crds/ibmcloud.ibm.com_accesspolicies_crd.yaml
+	kubectl apply -f deploy/crds/ibmcloud.ibm.com_accessgroups_crd.yaml
+	kubectl apply -f deploy/crds/ibmcloud.ibm.com_customroles_crd.yaml
 	kubectl apply -f deploy/service_account.yaml 
 	kubectl apply -f deploy/role.yaml 
 	kubectl apply -f deploy/role_binding.yaml 
@@ -33,9 +33,9 @@ install:
 
 .PHONY: uninstall
 uninstall:
-	kubectl delete -f deploy/crds/ibmcloud.ibm.com_v1alpha1_accesspolicy_crd.yaml
-	kubectl delete  -f deploy/crds/ibmcloud.ibm.com_v1alpha1_accessgroup_crd.yaml
-	kubectl delete  -f deploy/crds/ibmcloud.ibm.com_v1alpha1_customrole_crd.yaml
+	kubectl delete -f deploy/crds/ibmcloud.ibm.com_accesspolicies_crd.yaml
+	kubectl delete  -f deploy/crds/ibmcloud.ibm.com_accessgroups_crd.yaml
+	kubectl delete  -f deploy/crds/ibmcloud.ibm.com_customroles_crd.yaml
 	kubectl delete -f deploy/role.yaml 
 	kubectl delete -f deploy/role_binding.yaml
 	kubectl delete -f deploy/service_account.yaml

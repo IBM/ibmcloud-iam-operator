@@ -31,12 +31,12 @@ TEST_DEPLOY_DIR=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 
 echo "Copying artifacts in $TEST_DEPLOY_DIR ..."
 mkdir -p ${TEST_DEPLOY_DIR}/deploy/crds
-cp ${SCRIPTS_HOME}/../deploy/crds/ibmcloud.ibm.com_v1alpha1_accessgroup_crd.yaml ${TEST_DEPLOY_DIR}/deploy/crds/ibmcloud.ibm.com_v1alpha1_accessgroup_crd.yaml
-cp ${SCRIPTS_HOME}/../deploy/crds/ibmcloud.ibm.com_v1alpha1_customrole_crd.yaml ${TEST_DEPLOY_DIR}/deploy/crds/ibmcloud.ibm.com_v1alpha1_customrole_crd.yaml
-cp ${SCRIPTS_HOME}/../deploy/crds/ibmcloud.ibm.com_v1alpha1_accesspolicy_crd.yaml ${TEST_DEPLOY_DIR}/deploy/crds/ibmcloud.ibm.com_v1alpha1_accesspolicy_crd.yaml
-cp ${SCRIPTS_HOME}/../deploy/examples/ibmcloud.ibm.com_v1alpha1_accessgroup_cr.yaml ${TEST_DEPLOY_DIR}/deploy/crds/accessgroup_cr.yaml
-cp ${SCRIPTS_HOME}/../deploy/examples/ibmcloud.ibm.com_v1alpha1_customrole_cr.yaml ${TEST_DEPLOY_DIR}/deploy/crds/customrole_cr.yaml 
-cp ${SCRIPTS_HOME}/../deploy/examples/ibmcloud.ibm.com_v1alpha1_accesspolicy_cr.yaml ${TEST_DEPLOY_DIR}/deploy/crds/accesspolicy_cr.yaml 
+cp ${SCRIPTS_HOME}/../deploy/crds/ibmcloud.ibm.com_accessgroup_crd.yaml ${TEST_DEPLOY_DIR}/deploy/crds/ibmcloud.ibm.com_accessgroup_crd.yaml
+cp ${SCRIPTS_HOME}/../deploy/crds/ibmcloud.ibm.com_customrole_crd.yaml ${TEST_DEPLOY_DIR}/deploy/crds/ibmcloud.ibm.com_customrole_crd.yaml
+cp ${SCRIPTS_HOME}/../deploy/crds/ibmcloud.ibm.com_accesspolicy_crd.yaml ${TEST_DEPLOY_DIR}/deploy/crds/ibmcloud.ibm.com_accesspolicy_crd.yaml
+cp ${SCRIPTS_HOME}/../deploy/examples/ibmcloud.ibm.com_accessgroup_cr.yaml ${TEST_DEPLOY_DIR}/deploy/crds/accessgroup_cr.yaml
+cp ${SCRIPTS_HOME}/../deploy/examples/ibmcloud.ibm.com_customrole_cr.yaml ${TEST_DEPLOY_DIR}/deploy/crds/customrole_cr.yaml 
+cp ${SCRIPTS_HOME}/../deploy/examples/ibmcloud.ibm.com_accesspolicy_cr.yaml ${TEST_DEPLOY_DIR}/deploy/crds/accesspolicy_cr.yaml 
 
 # now copy all other artifacts
 cp ${SCRIPTS_HOME}/../releases/latest/*_service_account.yaml ${TEST_DEPLOY_DIR}/deploy/service_account.yaml

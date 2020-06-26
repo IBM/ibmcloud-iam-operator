@@ -8,7 +8,7 @@ metadata:
     categories: Cloud Provider
     certified: 'false'
     containerImage: cloudoperators/ibmcloud-iam-operator:0.1.0
-    createdAt: '2020-06-25T18:29:54Z'
+    createdAt: '2020-06-26T10:47:16Z'
     description: The IBM Cloud IAM Operator provides a set of three Kubernetes CRD-Based
       APIs to manage the lifecycle of Access Policies, Access Groups, and Custom Roles
       on IAM for IBM public cloud.
@@ -106,28 +106,28 @@ spec:
         displayName: Role Name
         path: roleName
         x-descriptors:
-        - urn:alm:descriptor:text
+        - urn:alm:descriptor:com.tectonic.ui:text
       - description: Display name of the new custom role to be created
         displayName: Display Name
         path: displayName
         x-descriptors:
-        - urn:alm:descriptor:text
+        - urn:alm:descriptor:com.tectonic.ui:text
       - description: Name of the IBM Cloud service that is linked to this new role
         displayName: Service Class
         path: serviceClass
         x-descriptors:
-        - urn:alm:descriptor:text
+        - urn:alm:descriptor:com.tectonic.ui:text
       - description: Description for this new custom role
         displayName: Description
         path: description
         x-descriptors:
-        - urn:alm:descriptor:text
+        - urn:alm:descriptor:com.tectonic.ui:text
       - description: List of actions that this role can perform (IAM actions as well
           as actions available for the service specified in ServiceClass
         displayName: Actions
         path: actions
         x-descriptors:
-        - urn:alm:descriptor:text
+        - urn:alm:descriptor:com.tectonic.ui:text
       statusDescriptors:
       - description: Detailed message on current status
         displayName: Message
@@ -194,17 +194,17 @@ spec:
         displayName: Subject
         path: subject
         x-descriptors:
-        - urn:alm:descriptor:text
+        - urn:alm:descriptor:com.tectonic.ui:text
       - description: Type to specify a list of Roles of an access policy
         displayName: Roles
         path: roles
         x-descriptors:
-        - urn:alm:descriptor:text
+        - urn:alm:descriptor:com.tectonic.ui:text
       - description: Type to specify the Target of an access policy
         displayName: Target
         path: target
         x-descriptors:
-        - urn:alm:descriptor:text
+        - urn:alm:descriptor:com.tectonic.ui:text
       statusDescriptors:
       - description: Detailed message on current status
         displayName: Message
