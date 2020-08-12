@@ -273,12 +273,18 @@ crd:
             "name": "myauthpolicy"
             },
             "spec": {
-            "source": {   
-              "serviceClass": "cloud-object-storage",
-            },
+            "source": { 
+              "resourceGroup": "Default",
+              "serviceClass": "kms",
+              "serviceID": "9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631"
+              },
             "roles": ["Reader"],
             "target": { 
-              "serviceClass": "kms",
+              "resourceGroup": "Default",
+              "serviceClass": "messagehub",
+              "serviceID": "9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631",
+              "resourceName": "topic",
+              "resourceID": "topic-ansu"
               }
             }
         }

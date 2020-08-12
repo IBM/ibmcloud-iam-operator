@@ -3,12 +3,12 @@ kind: ClusterServiceVersion
 metadata:
   annotations:
     alm-examples: |-
-      [{"apiVersion": "ibmcloud.ibm.com/v1alpha1", "kind": "AccessGroup", "metadata": {"name": "mygroup"}, "spec": {"name": "MyAccessGroup", "description": "A new access group to test access group controller", "userEmails": ["avarghese@us.ibm.com"], "serviceIDs": ["ServiceId-3b9f026a-eb6e-495f-b104-95232d0c4a59", "ServiceId-fa27c539-a6cf-41d2-8cb0-2916da5f8e8a"]}}, {"apiVersion": "ibmcloud.ibm.com/v1alpha1", "kind": "CustomRole", "metadata": {"name": "myrole"}, "spec": {"roleName": "MyAdmin", "serviceClass": "messagehub", "displayName": "My Admin", "description": "My admin only has a subset of the privileges of an IAM Admin role", "actions": ["iam.policy.create", "iam.policy.update", "messagehub.group.read"]}}, {"apiVersion": "ibmcloud.ibm.com/v1alpha1", "kind": "AccessPolicy", "metadata": {"name": "mypolicy"}, "spec": {"subject": {"accessGroupDef": {"accessGroupName": "mygroup", "accessGroupNamespace": "default"}}, "roles": {"definedRoles": ["Viewer", "Administrator"], "customRolesDef": [{"customRoleName": "myrole", "customRoleNamespace": "default"}]}, "target": {"resourceGroup": "Default", "serviceClass": "messagehub", "serviceID": "9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631", "resourceName": "topic", "resourceID": "topic-ansu"}}}]
+      [{"apiVersion": "ibmcloud.ibm.com/v1alpha1", "kind": "AccessGroup", "metadata": {"name": "mygroup"}, "spec": {"name": "MyAccessGroup", "description": "A new access group to test access group controller", "userEmails": ["avarghese@us.ibm.com"], "serviceIDs": ["ServiceId-3b9f026a-eb6e-495f-b104-95232d0c4a59", "ServiceId-fa27c539-a6cf-41d2-8cb0-2916da5f8e8a"]}}, {"apiVersion": "ibmcloud.ibm.com/v1alpha1", "kind": "CustomRole", "metadata": {"name": "myrole"}, "spec": {"roleName": "MyAdmin", "serviceClass": "messagehub", "displayName": "My Admin", "description": "My admin only has a subset of the privileges of an IAM Admin role", "actions": ["iam.policy.create", "iam.policy.update", "messagehub.group.read"]}}, {"apiVersion": "ibmcloud.ibm.com/v1alpha1", "kind": "AccessPolicy", "metadata": {"name": "mypolicy"}, "spec": {"subject": {"accessGroupDef": {"accessGroupName": "mygroup", "accessGroupNamespace": "default"}}, "roles": {"definedRoles": ["Viewer", "Administrator"], "customRolesDef": [{"customRoleName": "myrole", "customRoleNamespace": "default"}]}, "target": {"resourceGroup": "Default", "serviceClass": "messagehub", "serviceID": "9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631", "resourceName": "topic", "resourceID": "topic-ansu"}}}, {"apiVersion": "ibmcloud.ibm.com/v1alpha1", "kind": "AuthorizationPolicy", "metadata": {"name": "myauthpolicy"}, "spec": {"source": {"resourceGroup": "Default", "serviceClass": "kms", "serviceID": "9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631"}, "roles": ["Reader"], "target": {"resourceGroup": "Default", "serviceClass": "messagehub", "serviceID": "9f9d6641-d5ad-4fb2-8d49-c1e97bcfb631", "resourceName": "topic", "resourceID": "topic-ansu"}}}]
     capabilities: Basic Install
     categories: Cloud Provider
     certified: 'false'
     containerImage: cloudoperators/ibmcloud-iam-operator:0.1.0
-    createdAt: '2020-06-26T10:47:16Z'
+    createdAt: '2020-08-12T13:24:15Z'
     description: The IBM Cloud IAM Operator provides a set of three Kubernetes CRD-Based
       APIs to manage the lifecycle of Access Policies, Access Groups, and Custom Roles
       on IAM for IBM public cloud.
@@ -237,6 +237,66 @@ spec:
         x-descriptors:
         - urn:alm:descriptor:text
       version: v1alpha1
+    - description: Represents an instance of a authorization policy resource on IBM
+        Cloud IAM.
+      displayName: AuthorizationPolicy
+      kind: AuthorizationPolicy
+      name: authorizationpolicies.ibmcloud.ibm.com
+      resources:
+      - kind: Secret
+        version: v1
+      - kind: ConfigMap
+        version: v1
+      - kind: AuthorizationPolicy
+        version: v1alpha1
+      specDescriptors:
+      - description: Type to specify the Source of an authorization policy
+        displayName: Source
+        path: source
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Type to specify a list of Roles of an authorization policy
+        displayName: Roles
+        path: roles
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Type to specify the Target of an authorization policy
+        displayName: Target
+        path: target
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:text
+      statusDescriptors:
+      - description: Detailed message on current status
+        displayName: Message
+        path: message
+        x-descriptors:
+        - urn:alm:descriptor:text
+      - description: Current state for the binding
+        displayName: State
+        path: state
+        x-descriptors:
+        - urn:alm:descriptor:text
+      - description: Policy ID for the authorization policy
+        displayName: Policy ID
+        path: policyID
+        x-descriptors:
+        - urn:alm:descriptor:text
+      - description: Type to specify the Source of an authorization policy (Status)
+        displayName: Source
+        path: source
+        x-descriptors:
+        - urn:alm:descriptor:text
+      - description: Type to specify a list of Roles of an authorization policy (Status)
+        displayName: Roles
+        path: roles
+        x-descriptors:
+        - urn:alm:descriptor:text
+      - description: Type to specify the Target of an authorization policy (Status)
+        displayName: Target
+        path: target
+        x-descriptors:
+        - urn:alm:descriptor:text
+      version: v1alpha1
   description: "On IBM Public Cloud, Identity and Access Management (IAM) is used\
     \ to give access permissions so that entities can interact with resources. These\
     \ access policies are set via the CLI or on the Console and typically require\
@@ -341,6 +401,7 @@ spec:
           - accesspolicies
           - customroles
           - accessgroups
+          - authorizationpolicies
           verbs:
           - get
           - list
@@ -355,6 +416,7 @@ spec:
           - accesspolicies/finalizers
           - customroles/finalizers
           - accessgroups/finalizers
+          - authorizationpolicies/finalizers
           verbs:
           - get
           - list
@@ -393,6 +455,7 @@ spec:
           - accesspolicies/status
           - customroles/status
           - accessgroups/status
+          - authorizationpolicies/status
           verbs:
           - get
           - list
