@@ -17,24 +17,25 @@ package accesspolicy
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"reflect"
 	"strings"
 	"time"
-	"errors"
 
 	ibmcloudv1alpha1 "github.com/IBM/ibmcloud-iam-operator/pkg/apis/ibmcloud/v1alpha1"
 	common "github.com/IBM/ibmcloud-iam-operator/pkg/util"
 
- 	"github.com/IBM-Cloud/bluemix-go/api/account/accountv1"
+	"github.com/IBM-Cloud/bluemix-go/api/account/accountv1"
 	"github.com/IBM-Cloud/bluemix-go/api/account/accountv2"
 	"github.com/IBM-Cloud/bluemix-go/api/iam/iamv1"
 	"github.com/IBM-Cloud/bluemix-go/api/iampap/iampapv1"
 	"github.com/IBM-Cloud/bluemix-go/api/iampap/iampapv2"
 	"github.com/IBM-Cloud/bluemix-go/api/iamuum/iamuumv2"
+	"github.com/IBM-Cloud/bluemix-go/models"
 	"github.com/IBM-Cloud/bluemix-go/utils"
 
-	"k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	kerror "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
@@ -154,7 +155,7 @@ func (r *ReconcileAccessPolicy) Reconcile(request reconcile.Request) (reconcile.
 			reqLogger.Info("Error updating initial status", "Failed", err.Error())
 			return reconcile.Result{}, err
 		}
-	} 
+	}
 
 	// Check that the spec is well-formed
 	if !isWellFormed(*instance) {
@@ -174,7 +175,7 @@ func (r *ReconcileAccessPolicy) Reconcile(request reconcile.Request) (reconcile.
 				reqLogger.Info("Error updating status for bad spec", "Failed", err.Error())
 				return reconcile.Result{}, err
 			}
-	
+
 		}
 		return reconcile.Result{Requeue: true, RequeueAfter: syncPeriod}, nil
 	}
@@ -199,7 +200,7 @@ func (r *ReconcileAccessPolicy) Reconcile(request reconcile.Request) (reconcile.
 		}
 		return reconcile.Result{}, err
 	}
-	
+
 	statusPolicyID := instance.Status.PolicyID
 
 	iampapClient, err := iampapv1.New(sess)
@@ -238,9 +239,9 @@ func (r *ReconcileAccessPolicy) Reconcile(request reconcile.Request) (reconcile.
 		return reconcile.Result{}, err
 	}
 	accessGroupAPI := iamuumClient.AccessGroup()
-	
+
 	// Delete if necessary
- 	if instance.ObjectMeta.DeletionTimestamp.IsZero() {
+	if instance.ObjectMeta.DeletionTimestamp.IsZero() {
 		// Instance is not being deleted, add the finalizer if not present
 		if !ContainsFinalizer(instance) {
 			instance.ObjectMeta.Finalizers = append(instance.ObjectMeta.Finalizers, accesspolicyFinalizer)
@@ -252,19 +253,19 @@ func (r *ReconcileAccessPolicy) Reconcile(request reconcile.Request) (reconcile.
 	} else {
 		// The object is being deleted
 		if ContainsFinalizer(instance) {
-			if (statusPolicyID != "") { //Policy must exist in IAM since status has an ID 
+			if statusPolicyID != "" { //Policy must exist in IAM since status has an ID
 				err := deleteAccessPolicy(statusPolicyID, policyAPI)
-				if err != nil {			
+				if err != nil {
 					if !strings.Contains(err.Error(), "not found") {
 						reqLogger.Info("Error deleting access policy", instance.Name, err.Error())
 						return reconcile.Result{}, err
-					}	
+					}
 				}
-				reqLogger.Info("Deleted access policy.","Policy ID:",statusPolicyID)
+				reqLogger.Info("Deleted access policy.", "Policy ID:", statusPolicyID)
 				if instance.Status.State != "Deleted" {
 					instance.Status.State = "Deleted"
 					instance.Status.Message = "IAM access policy deleted"
-					instance.Status.PolicyID = ""   //clear out the policy ID since policy with this ID has been deleted
+					instance.Status.PolicyID = "" //clear out the policy ID since policy with this ID has been deleted
 					if err := r.client.Update(context.Background(), instance); err != nil {
 						reqLogger.Info("Error updating status for access policy deletion", "in deletion", err.Error())
 						return reconcile.Result{}, err
@@ -279,7 +280,7 @@ func (r *ReconcileAccessPolicy) Reconcile(request reconcile.Request) (reconcile.
 			}
 			return reconcile.Result{}, nil
 		}
-	}  
+	}
 
 	/* Setting roles, resource and subject in Policy */
 	policyRoles, err := getRoles(instance, r, myAccount, serviceRolesAPI, customRolesAPI)
@@ -290,10 +291,10 @@ func (r *ReconcileAccessPolicy) Reconcile(request reconcile.Request) (reconcile.
 		if err := r.client.Status().Update(context.Background(), instance); err != nil {
 			reqLogger.Info("Error updating status for failing get roles", "Failed", err.Error())
 			return reconcile.Result{}, err
-		}	
+		}
 		return reconcile.Result{}, err
 	}
-	
+
 	policyResource, err := getResource(instance, serviceIDAPI)
 	if err != nil {
 		reqLogger.Info("Error getting resource for access policy", "Failed", err.Error())
@@ -302,11 +303,11 @@ func (r *ReconcileAccessPolicy) Reconcile(request reconcile.Request) (reconcile.
 		if err := r.client.Status().Update(context.Background(), instance); err != nil {
 			reqLogger.Info("Error updating status for failing get resource", "Failed", err.Error())
 			return reconcile.Result{}, err
-		}	
+		}
 		return reconcile.Result{}, err
 	}
 
-	policySubject, err  := getSubject(instance, r, myAccount, accountAPIV1, serviceIDAPI, accessGroupAPI)
+	policySubject, err := getSubject(instance, r, myAccount, accountAPIV1, serviceIDAPI, accessGroupAPI)
 	if err != nil {
 		reqLogger.Info("Error getting subject for access policy", "Failed", err.Error())
 		instance.Status.State = "Failed"
@@ -314,7 +315,7 @@ func (r *ReconcileAccessPolicy) Reconcile(request reconcile.Request) (reconcile.
 		if err := r.client.Status().Update(context.Background(), instance); err != nil {
 			reqLogger.Info("Error updating status for failing get subject", "Failed", err.Error())
 			return reconcile.Result{}, err
-		}	
+		}
 		return reconcile.Result{}, err
 	}
 
@@ -323,22 +324,22 @@ func (r *ReconcileAccessPolicy) Reconcile(request reconcile.Request) (reconcile.
 	policy.Type = iampapv1.AccessPolicyType
 	policy.Subjects = policySubject
 
-	if (statusPolicyID != "") { //Policy must exist in IAM since status has an ID 
+	if statusPolicyID != "" { //Policy must exist in IAM since status has an ID
 		retrievedPolicy, err := policyAPI.Get(statusPolicyID)
 		etag := retrievedPolicy.Version
 		if err != nil {
 			reqLogger.Info("Error retrieving policy", "Failed", err.Error())
 			instance.Status.State = "Failed"
 			instance.Status.Message = "Error retrieving policy"
-			instance.Status.PolicyID = ""   //clear out the policy ID since policy with this ID can't be retrieved
+			instance.Status.PolicyID = "" //clear out the policy ID since policy with this ID can't be retrieved
 			if err := r.client.Status().Update(context.Background(), instance); err != nil {
 				reqLogger.Info("Error updating status for failing access policy retrieval", "Failed", err.Error())
 				return reconcile.Result{}, err
 			}
 			return reconcile.Result{Requeue: true, RequeueAfter: syncPeriod}, err
-		}	
+		}
 
-		if (specChanged(instance) || policyChanged(policy, retrievedPolicy)) { // Spec change or a change via the IAM console means the acccess policy needs an update
+		if specChanged(instance) || policyChanged(policy, retrievedPolicy) { // Spec change or a change via the IAM console means the acccess policy needs an update
 			updatedPolicy, err := updateAccessPolicy(statusPolicyID, policy, policyAPI, etag)
 			if err != nil {
 				reqLogger.Info("Error updating policy", "Failed", err.Error())
@@ -350,7 +351,7 @@ func (r *ReconcileAccessPolicy) Reconcile(request reconcile.Request) (reconcile.
 				}
 				return reconcile.Result{}, err
 			}
-			reqLogger.Info("Updated access policy.","Policy ID:",updatedPolicy.ID,"Policy Href:",updatedPolicy.Href)
+			reqLogger.Info("Updated access policy.", "Policy ID:", updatedPolicy.ID, "Policy Href:", updatedPolicy.Href)
 
 			instance.Status.State = "Online"
 			instance.Status.Message = "IAM access policy updated"
@@ -362,7 +363,7 @@ func (r *ReconcileAccessPolicy) Reconcile(request reconcile.Request) (reconcile.
 				reqLogger.Info("Error updating status for access policy update", "Failed", err.Error())
 				return reconcile.Result{}, err
 			}
-		} 
+		}
 	} else { //Policy doesn't exist in IAM
 		createdPolicy, err := createAccessPolicy(policy, policyAPI)
 		if err != nil {
@@ -375,7 +376,7 @@ func (r *ReconcileAccessPolicy) Reconcile(request reconcile.Request) (reconcile.
 			}
 			return reconcile.Result{}, err
 		}
-		reqLogger.Info("Created access policy.","Policy ID:",createdPolicy.ID,"Policy Href:",createdPolicy.Href)
+		reqLogger.Info("Created access policy.", "Policy ID:", createdPolicy.ID, "Policy Href:", createdPolicy.Href)
 
 		instance.Status.State = "Online"
 		instance.Status.Message = "New IAM access policy created"
@@ -386,16 +387,16 @@ func (r *ReconcileAccessPolicy) Reconcile(request reconcile.Request) (reconcile.
 		if err := r.client.Status().Update(context.Background(), instance); err != nil {
 			reqLogger.Info("Error updating status for access policy creation", "Failed", err.Error())
 			errr := deleteAccessPolicy(createdPolicy.ID, policyAPI)
-			if errr != nil {	
+			if errr != nil {
 				if !strings.Contains(errr.Error(), "not found") {
 					reqLogger.Info("Error deleting access policy", instance.Name, errr.Error())
 					return reconcile.Result{}, errr
-				}	
-			} 
-			reqLogger.Info("Deleted access policy.","Policy ID:",createdPolicy.ID)
+				}
+			}
+			reqLogger.Info("Deleted access policy.", "Policy ID:", createdPolicy.ID)
 			return reconcile.Result{}, err
 		}
-	}	
+	}
 	return reconcile.Result{Requeue: true, RequeueAfter: syncPeriod}, nil
 }
 
@@ -406,7 +407,7 @@ func policyChanged(policy iampapv1.Policy, retrievedPolicy iampapv1.Policy) bool
 	}
 
 	for _, m := range retrievedPolicy.Roles {
-		if !contains(policy.Roles,m) {
+		if !contains(policy.Roles, m) {
 			log.Info("Access policy roles in IAM has changed")
 			return true
 		}
@@ -415,17 +416,17 @@ func policyChanged(policy iampapv1.Policy, retrievedPolicy iampapv1.Policy) bool
 	if !reflect.DeepEqual(retrievedPolicy.Resources, policy.Resources) {
 		log.Info("Access policy resource in IAM has changed")
 		return true
-	}	
+	}
 	return false
 }
 
 func contains(policyRoles []iampapv1.Role, e iampapv1.Role) bool {
-    for _, a := range policyRoles {
-        if reflect.DeepEqual(a.RoleID,e.RoleID) {
-            return true
-        }
-    }
-    return false
+	for _, a := range policyRoles {
+		if reflect.DeepEqual(a.RoleID, e.RoleID) {
+			return true
+		}
+	}
+	return false
 }
 
 func specChanged(instance *ibmcloudv1alpha1.AccessPolicy) bool {
@@ -447,7 +448,7 @@ func specChanged(instance *ibmcloudv1alpha1.AccessPolicy) bool {
 	if !reflect.DeepEqual(instance.Spec.Target, instance.Status.Target) {
 		log.Info("Access policy resource in Spec has changed")
 		return true
-	}	
+	}
 	return false
 }
 
@@ -467,14 +468,14 @@ func updateAccessPolicy(statusPolicyID string, policy iampapv1.Policy, policyAPI
 	return &updatedPolicy, nil
 }
 
-func deleteAccessPolicy(statusPolicyID string, policyAPI iampapv1.V1PolicyRepository) (error) {
+func deleteAccessPolicy(statusPolicyID string, policyAPI iampapv1.V1PolicyRepository) error {
 	err := policyAPI.Delete(statusPolicyID)
 	if err != nil {
 		return err
 	}
 
 	//TODO: Should user be removed from account after policy deletion? What if user is a member of another group or policy?
-/*     if instance.Spec.Subject.UserEmail != "" {
+	/*     if instance.Spec.Subject.UserEmail != "" {
 		userDetails, err := accountAPIV1.FindAccountUserByUserId(myAccount.GUID, instance.Spec.Subject.UserEmail)
 		if err != nil {
 			return err
@@ -485,7 +486,7 @@ func deleteAccessPolicy(statusPolicyID string, policyAPI iampapv1.V1PolicyReposi
 			if err != nil {
 				return err
 			}
-		}	
+		}
 	} */
 	return nil
 }
@@ -502,11 +503,11 @@ func getSubject(instance *ibmcloudv1alpha1.AccessPolicy, r *ReconcileAccessPolic
 		if err != nil {
 			return nil, err
 		}
-		
-		if userDetails == nil || userDetails.Id == ""{
+
+		if userDetails == nil || userDetails.Id == "" {
 			return nil, errors.New("User email is not valid.")
-		} 
-		
+		}
+
 		if (userDetails.UserId == "" || userDetails.IbmUniqueId == "" || userDetails.State == "PENDING") && (userDetails.Id != "") {
 			err = account.DeleteAccountUser(myAccount.GUID, userDetails.Id)
 			if err != nil {
@@ -584,14 +585,24 @@ func getRoles(instance *ibmcloudv1alpha1.AccessPolicy, r *ReconcileAccessPolicy,
 	/* Getting roles for Subject */
 	var policyRoles []iampapv1.Role
 
-	if (instance.Spec.Roles.DefinedRoles != nil) {
+	if instance.Spec.Roles.DefinedRoles != nil {
 		//log.Info("Spec contains defined roles")
-		definedRoles, err := serviceRolesAPI.ListSystemDefinedRoles() 
-		if err != nil {
-			log.Info("Error getting defined system roles")
-			return nil, err
+		var definedRoles []models.PolicyRole
+		var err error
+		if instance.Spec.Target.ServiceClass == "" {
+			definedRoles, err = serviceRolesAPI.ListSystemDefinedRoles()
+			if err != nil {
+				log.Info("Error getting defined system roles")
+				return nil, err
+			}
+		} else {
+			definedRoles, err = serviceRolesAPI.ListServiceRoles(instance.Spec.Target.ServiceClass)
+			if err != nil {
+				log.Info("Error getting defined system roles")
+				return nil, err
+			}
 		}
-		
+
 		filterDRoles, err := utils.GetRolesFromRoleNames(instance.Spec.Roles.DefinedRoles, definedRoles)
 		if err != nil {
 			log.Info("Error getting defined roles in spec")
@@ -600,9 +611,9 @@ func getRoles(instance *ibmcloudv1alpha1.AccessPolicy, r *ReconcileAccessPolicy,
 		policyRoles = iampapv1.ConvertRoleModels(filterDRoles)
 	}
 
-	if (instance.Spec.Roles.CustomRolesDName != nil) {
+	if instance.Spec.Roles.CustomRolesDName != nil {
 		//log.Info("Spec contains non-operator managed custom roles")
-		customCRoles, err := customRolesAPI.ListCustomRoles(myAccount.GUID,"")
+		customCRoles, err := customRolesAPI.ListCustomRoles(myAccount.GUID, "")
 		if err != nil {
 			log.Info("Error getting custom roles")
 			return nil, err
@@ -613,10 +624,10 @@ func getRoles(instance *ibmcloudv1alpha1.AccessPolicy, r *ReconcileAccessPolicy,
 			log.Info("Error getting custom roles in spec")
 			return nil, err
 		}
-		policyRoles = append(policyRoles,iampapv1.ConvertV2RoleModels(filterCRoles)...)
+		policyRoles = append(policyRoles, iampapv1.ConvertV2RoleModels(filterCRoles)...)
 	}
 
-	if (instance.Spec.Roles.CustomRolesDef != nil) {
+	if instance.Spec.Roles.CustomRolesDef != nil {
 		//log.Info("Spec contains operator managed custom roles")
 		var myCustomRoles []string
 		var customDefRoles []iampapv2.Role
@@ -626,7 +637,7 @@ func getRoles(instance *ibmcloudv1alpha1.AccessPolicy, r *ReconcileAccessPolicy,
 				log.Info("Access Policy could not read custom role", element.CustomRoleName, err.Error())
 				return nil, err
 			}
-			myCustomRoles = append(myCustomRoles,customRole.Spec.DisplayName)	
+			myCustomRoles = append(myCustomRoles, customRole.Spec.DisplayName)
 
 			var croles []iampapv2.Role
 			croles, err = customRolesAPI.ListAll(iampapv2.RoleQuery{AccountID: myAccount.GUID, ServiceName: customRole.Spec.ServiceClass})
@@ -634,7 +645,7 @@ func getRoles(instance *ibmcloudv1alpha1.AccessPolicy, r *ReconcileAccessPolicy,
 				log.Info("Error getting custom system roles")
 				return nil, err
 			}
-			customDefRoles = append(customDefRoles,croles...)
+			customDefRoles = append(customDefRoles, croles...)
 		}
 
 		filterDefRoles, err := utils.GetRolesFromRoleNamesV2(myCustomRoles, customDefRoles)
@@ -642,7 +653,7 @@ func getRoles(instance *ibmcloudv1alpha1.AccessPolicy, r *ReconcileAccessPolicy,
 			log.Info("Error getting custom roles in spec")
 			return nil, err
 		}
-		policyRoles = append(policyRoles,iampapv1.ConvertV2RoleModels(filterDefRoles)...)
+		policyRoles = append(policyRoles, iampapv1.ConvertV2RoleModels(filterDefRoles)...)
 	}
 	return policyRoles, nil
 }
@@ -651,20 +662,23 @@ func getResource(instance *ibmcloudv1alpha1.AccessPolicy, serviceIDAPI iamv1.Ser
 	/* Getting attributes for Resource */
 	policyResource := iampapv1.Resource{}
 
- 	if instance.Spec.Target.ServiceClass != "" {
-		policyResource.SetAttribute("serviceName",instance.Spec.Target.ServiceClass)
+	if instance.Spec.Target.ServiceClass != "" {
+		policyResource.SetAttribute("serviceName", instance.Spec.Target.ServiceClass)
 	}
 	if instance.Spec.Target.ServiceID != "" {
-		policyResource.SetAttribute("serviceInstance",instance.Spec.Target.ServiceID)
-	}  
+		policyResource.SetAttribute("serviceInstance", instance.Spec.Target.ServiceID)
+	}
 	if instance.Spec.Target.ResourceName != "" {
-		policyResource.SetAttribute("resourceType",instance.Spec.Target.ResourceName)
-	} 
+		policyResource.SetAttribute("resourceType", instance.Spec.Target.ResourceName)
+	}
 	if instance.Spec.Target.ResourceID != "" {
-		policyResource.SetAttribute("resource",instance.Spec.Target.ResourceID)
-	} 
-  	if instance.Spec.Target.ResourceGroup != "" {
+		policyResource.SetAttribute("resource", instance.Spec.Target.ResourceID)
+	}
+	if instance.Spec.Target.ResourceGroup != "" {
 		policyResource.SetResourceGroupID(instance.Spec.Target.ResourceGroup)
+	}
+	if instance.Spec.Target.Region != "" {
+		policyResource.SetAttribute("region", instance.Spec.Target.Region)
 	}
 	if instance.Spec.Target.ResourceKey != "" && instance.Spec.Target.ResourceValue != "" {
 		policyResource.SetAttribute(instance.Spec.Target.ResourceKey, instance.Spec.Target.ResourceValue)

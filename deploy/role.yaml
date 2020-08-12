@@ -24,6 +24,7 @@ rules:
   - accesspolicies
   - customroles
   - accessgroups
+  - authorizationpolicies
   verbs:
   - get
   - list
@@ -38,6 +39,7 @@ rules:
   - accesspolicies/finalizers
   - customroles/finalizers
   - accessgroups/finalizers
+  - authorizationpolicies/finalizers
   verbs:
   - get
   - list
@@ -76,6 +78,7 @@ rules:
   - accesspolicies/status
   - customroles/status
   - accessgroups/status
+  - authorizationpolicies/status
   verbs:
   - get
   - list

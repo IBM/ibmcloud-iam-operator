@@ -1,0 +1,11 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: cosbadrole
+spec:
+  source:
+    serviceClass: cloud-object-storage
+  roles:
+   - Entertainer
+  target:
+    serviceClass: kms

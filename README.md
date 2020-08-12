@@ -25,13 +25,14 @@ On IBM Public Cloud, Identity and Access Management (IAM) is used to give access
 
 IBM Cloud IAM Kubernetes Operator provides a **user-friendly Operator for IKS and OpenShift to automate scenarios for managing access to IBM Cloud  Resources** via Kubernetes CRD-Based APIs:
 1. For access groups,
-2. For custom  roles, and
-3. For access policies
+2. For custom  roles,
+3. For access policies, and
+4. For authorization policies
 
 This will give users few advantages:
-- The operator **makes it easier to specify access groups, custom roles, and access policies** at a high level in a Kubernetes  YAML  declaratively, 
+- The operator **makes it easier to specify access groups, custom roles, access & authorization policies** at a high level in a Kubernetes  YAML  declaratively, 
 - The operator **automates interactions with IAM APIs** without requiring the user to know specifics,
-- The operator **enforces access groups, custom roles, and access policies** via the operator's desired-state management. For example, if a user is moved out of a group accidentally, the operator would move them back and remediate the issue,
+- The operator **enforces access groups, custom roles, access & authorization policies** via the operator's desired-state management. For example, if a user is moved out of a group accidentally, the operator would move them back and remediate the issue,
 - The operator **integrates IBM Cloud  IAM  tightly with Kubernetes'  built-in  support  for RBAC**.
 
 ## Requirements
@@ -154,6 +155,37 @@ ResourceID | No | string | Specify the ResourceID of the resource in ResourceNam
 ResourceKey | No | string | Specify the attribute of a resource as a key in a shared service like, "namespace"
 ResourceValue | No | string | Specify the value of the ResourceKey like, "dev" (Not an ID)
 
+### 4. Authorization Policy Yaml Elements
+
+The `Authorization Policy` yaml includes the following elements:
+
+Spec Fields | Is required | Format/Type | Comments
+---------| ------------|-------------|-----------------
+ Source | Yes | Info  | The type to specify the Source of an authorization policy
+ Roles   | Yes | []string    | The type to specify a list of Roles of an authorization policy
+ Target  | Yes | Info   | The type to specify the Target of an authorization policy
+ 
+ 
+Subject Fields | Is required | Format/Type | Comments
+---------| ------------|-------------|-----------------
+ResourceGroup | No | string | Specify a Resource Group like, "Default". Mutually exclusive with ServiceID
+ServiceClass | No | string | Specify a name of IBM Cloud shared service like, "cloud-object-storage"
+ServiceID | No | string | Specify the ServiceID of an instance of the service in ServiceClass like "ServiceID-xyz". Mutually exclusive with ResourceGroup
+ResourceName | No | string | Specify the name of a resource in a shared service like, "bucket"
+ResourceID | No | string | Specify the ResourceID of the resource in ResourceName like, "my-cos-bucket" (Not an ID)
+ResourceKey | No | string | Specify the attribute of a resource as a key in a shared service like, "namespace"
+ResourceValue | No | string | Specify the value of the ResourceKey like, "dev" (Not an ID)
+
+Target Fields | Is required | Format/Type | Comments
+-------------| ------------|-------------|-----------------
+ResourceGroup | No | string | Specify a Resource Group like, "Default". Mutually exclusive with ServiceID
+ServiceClass | No | string | Specify a name of IBM Cloud shared service like, "cloud-object-storage"
+ServiceID | No | string | Specify the ServiceID of an instance of the service in ServiceClass like "ServiceID-xyz".  Mutually exclusive with ResourceGroup
+ResourceName | No | string | Specify the name of a resource in a shared service like, "bucket"
+ResourceID | No | string | Specify the ResourceID of the resource in ResourceName like, "my-cos-bucket" (Not an ID)
+ResourceKey | No | string | Specify the attribute of a resource as a key in a shared service like, "namespace"
+ResourceValue | No | string | Specify the value of the ResourceKey like, "dev" (Not an ID)
+
 Each `paramater` is treated as a `RawExtension` by the Operator and parsed into JSON.
 
 The IBM Cloud IAM Operator needs an account context, which indicates the `api-key` and the details of the IBM Public Cloud
@@ -195,9 +227,9 @@ These can be created similary to what is done in `hack/configure-operator.sh`.
 If we create an access policy resource in a namespace `XYZ`, the IBM Cloud IAM Operator first looks in the `XYZ` namespace to find `secret-ibmcloud-iam-operator` and `config-ibmcloud-iam-operator`, for account context. If they are missing in `XYZ`, it looks for the `ibmcloud-iam-operator` configmap in the namespace where the operator is installed, to see if there is a management namespace. If there is, it looks in the management namespace for the secret and configmap with the naming convention:
 `XYZ-secret-ibmcloud-iam-operator` and `XYZ-config-ibmcloud-iam-operator`. If there is no management namespace, the operator looks in the `default` namespace for the secret and configmap (`secret-ibmcloud-iam-operator` and `config-ibmcloud-iam-operator`).
 
-## Managing Access Groups, Custom Roles or Access Policies
+## Managing Access Groups, Custom Roles, Access or Authorization Policies
 
-### Creating an Access Group, Custom Role or Access Policy
+### Creating an Access Group, Custom Role, Access or Authorization Policy
 
 You can create an access policy with name `cosuserpolicy` for user `avarghese@us.ibm.com` to access a Cloud Object Storage instance's bucket as an `Administrator`  using the following custom resource written in an yaml file `cosuserpolicy.yaml`:
 
@@ -227,6 +259,32 @@ To find the status of your access policy, you can run the command:
 ```kubectl get accesspolicies.ibmcloud 
 NAME                 STATUS   AGE
 cosuserpolicy        Online   25s
+```
+
+You can create an authorization policy for `cloud-object-storage` services to be authorized to read `key-protect` instances using the following custom resource written in an yaml file `coskmspolicy.yaml`:
+
+
+```apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: coskmsauthpolicy
+spec:
+  source:
+    serviceClass: cloud-object-storage
+  roles:
+    - Reader
+  target:
+    serviceClass: kms
+
+```
+and then run the command:
+```kubectl create -f coskmspolicy.yaml```
+
+To find the status of your access policy, you can run the command:
+
+```kubectl get authorizationpolicies.ibmcloud 
+NAME                 STATUS   AGE
+coskmspolicy        Online   25s
 ```
 
 Here's another example to create all three custom resources: You can create an access policy with name `demonewgrouppolicy` for access group resource `demonewgroup` in namespace `default` to access an Event Stream instance's topic `topic-ansu` as a custom role `ES Admin` that is running in the cluster as a custom role resource `democustomrole` in namespace `default` using the following yaml file [`accesspolicy_example_EventStreams_demo.yaml`](deploy/examples/accesspolicy_example_EventStreams_demo.yaml) :
@@ -287,7 +345,7 @@ spec:
 and then run the command:
 ```kubectl create -f accesspolicy_example_EventStreams_demo.yaml```
 
-To find the status of your access policy, you can run the command:
+To find the status of your custom resources, you can run the command:
 
 ```kubectl get accessgroups.ibmcloud 
 NAME                 STATUS   AGE
@@ -302,7 +360,7 @@ NAME                 STATUS   AGE
 demonewgrouppolicy        Online   25s
 ```
 
-### Updating an Access Group, Custom Role or Access Policy
+### Updating an Access Group, Custom Role, Access or Authorization Policy
 
 You can update an existing access policy custom resource, say, if you'd like to change an existing subject or role or resource target in an existing IAM access policy. You can either edit the yaml specification, and then run the command:
 ```kubectl apply -f cosuserpolicy.yaml```
@@ -310,9 +368,9 @@ You can update an existing access policy custom resource, say, if you'd like to 
 Or you can run the kubectl edit command directly to update the resource:
 ```kubectl edit accesspolicies.ibmcloud cosuserpolicy```
 
-And similarly, for access groups and custom roles.
-
-### Deleting an Access Group, Custom Role or Access Policy
+And similarly, for access groups, custom roles and authorization policies.
+ 
+### Deleting an Access Group, Custom Role, Access or Authorization Policy
 
 Deleting an access policy custom resource, deletes the access policy instance in IBM Cloud's IAM. 
 
@@ -322,7 +380,7 @@ To delete an access policy with name `cosuserpolicy`, run:
 
 The operator uses finalizers to remove the custom resource only after the access policy is deleted from IAM. 
 
-And similarly, for access groups and custom roles.
+And similarly, for access groups, custom roles and authorization policies.
 
 ## Access Policy Reconciliation rules
 

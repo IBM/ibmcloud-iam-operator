@@ -1,0 +1,13 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: coskmsauthpolicyinstance
+spec:
+  source:
+    serviceClass: cloud-object-storage
+    serviceID: 1cdd19ff-c033-4767-b6b7-4fe2fc58c6a1
+  roles:
+    - Reader
+  target:
+    serviceClass: kms
+    serviceID: 3dccec4e-1853-410c-af92-e7312230dcb5

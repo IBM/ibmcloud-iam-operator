@@ -82,6 +82,8 @@ spec:
               type: object
             target:
               properties:
+                region:
+                  type: string
                 resourceGroup:
                   type: string
                 resourceID:
@@ -155,6 +157,8 @@ spec:
               type: object
             target:
               properties:
+                region:
+                  type: string
                 resourceGroup:
                   type: string
                 resourceID:

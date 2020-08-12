@@ -264,3 +264,75 @@ crd:
           path: target
           x-descriptors:
             - 'urn:alm:descriptor:text'                          
+    - kind: AuthorizationPolicy
+      description: Represents an instance of a authorization policy resource on IBM Cloud IAM.
+      example: |-
+        {"apiVersion": "ibmcloud.ibm.com/v1alpha1",
+            "kind": "AuthorizationPolicy",
+            "metadata": {
+            "name": "myauthpolicy"
+            },
+            "spec": {
+            "source": {   
+              "serviceClass": "cloud-object-storage",
+            },
+            "roles": ["Reader"],
+            "target": { 
+              "serviceClass": "kms",
+              }
+            }
+        }
+      resources:
+        - kind: Secret
+          version: v1
+        - kind: ConfigMap
+          version: v1
+        - kind: AuthorizationPolicy
+          version: v1alpha1
+      specDescriptors:        
+        - description: Type to specify the Source of an authorization policy
+          displayName: Source
+          path: source
+          x-descriptors:
+            - 'urn:alm:descriptor:com.tectonic.ui:text' 
+        - description: Type to specify a list of Roles of an authorization policy
+          displayName: Roles
+          path: roles
+          x-descriptors:
+            - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - description: Type to specify the Target of an authorization policy
+          displayName: Target
+          path: target
+          x-descriptors:
+            - 'urn:alm:descriptor:com.tectonic.ui:text'       
+      statusDescriptors:
+        - description: Detailed message on current status
+          displayName: Message
+          path: message
+          x-descriptors:
+            - 'urn:alm:descriptor:text'    
+        - description: Current state for the binding
+          displayName: State
+          path: state
+          x-descriptors:
+            - 'urn:alm:descriptor:text'
+        - description: Policy ID for the authorization policy
+          displayName: Policy ID
+          path: policyID
+          x-descriptors:
+            - 'urn:alm:descriptor:text'       
+        - description: Type to specify the Source of an authorization policy (Status)
+          displayName: Source
+          path: source
+          x-descriptors:
+            - 'urn:alm:descriptor:text'   
+        - description: Type to specify a list of Roles of an authorization policy (Status)
+          displayName: Roles
+          path: roles
+          x-descriptors:
+            - 'urn:alm:descriptor:text' 
+        - description: Type to specify the Target of an authorization policy (Status)
+          displayName: Target
+          path: target
+          x-descriptors:
+            - 'urn:alm:descriptor:text' 

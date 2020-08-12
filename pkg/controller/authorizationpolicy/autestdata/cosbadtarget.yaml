@@ -1,0 +1,11 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: cosbadtarget
+spec:
+  source:
+    serviceClass: cloud-object-storage
+  roles:
+    - Reader
+  target:
+    serviceClass: keyprotect

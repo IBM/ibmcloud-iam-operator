@@ -26,6 +26,7 @@ install:
 	kubectl apply -f deploy/crds/ibmcloud.ibm.com_accesspolicies_crd.yaml
 	kubectl apply -f deploy/crds/ibmcloud.ibm.com_accessgroups_crd.yaml
 	kubectl apply -f deploy/crds/ibmcloud.ibm.com_customroles_crd.yaml
+	kubectl apply -f deploy/crds/ibmcloud.ibm.com_authorizationpolicies_crd.yaml
 	kubectl apply -f deploy/service_account.yaml 
 	kubectl apply -f deploy/role.yaml 
 	kubectl apply -f deploy/role_binding.yaml 
@@ -36,6 +37,7 @@ uninstall:
 	kubectl delete -f deploy/crds/ibmcloud.ibm.com_accesspolicies_crd.yaml
 	kubectl delete  -f deploy/crds/ibmcloud.ibm.com_accessgroups_crd.yaml
 	kubectl delete  -f deploy/crds/ibmcloud.ibm.com_customroles_crd.yaml
+	kubectl delete -f deploy/crds/ibmcloud.ibm.com_authorizationpolicies_crd.yaml
 	kubectl delete -f deploy/role.yaml 
 	kubectl delete -f deploy/role_binding.yaml
 	kubectl delete -f deploy/service_account.yaml

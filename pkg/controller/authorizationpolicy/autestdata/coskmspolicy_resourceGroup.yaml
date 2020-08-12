@@ -1,0 +1,13 @@
+apiVersion: ibmcloud.ibm.com/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: coskmsauthpolicyrg
+spec:
+  source:
+    serviceClass: cloud-object-storage
+    resourceGroup: Default
+  roles:
+    - Reader
+  target:
+    serviceClass: kms
+    resourceGroup: Default
