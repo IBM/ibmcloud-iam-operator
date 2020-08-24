@@ -103,6 +103,14 @@ function object::wait_rule_online() {
     object::wait_resource_online "rules.ibmcloud.ibm.com" $name $retries
 }
 
+# wait for authorizationpolicy to be online
+function object::wait_authorizationpolicy_online() {
+    local name="$1"
+    local retries="$2"
+
+    object::wait_resource_online "authorizationpolicy.ibmcloud.ibm.com" $name $retries
+}
+
 # wait for accesspolicy to be online
 function object::wait_accesspolicy_online() {
     local name="$1"

@@ -73,6 +73,11 @@ func DeleteObject(context rcontext.Context, obj runtime.Object, async bool) {
 	}
 }
 
+// LoadAuthorizationPolicy loads the YAML spec into obj
+func LoadAuthorizationPolicy(filename string) v1alpha1.AuthorizationPolicy {
+	return *LoadObject(filename, &v1alpha1.AuthorizationPolicy{}).(*v1alpha1.AuthorizationPolicy)
+}
+
 // LoadAccessPolicy loads the YAML spec into obj
 func LoadAccessPolicy(filename string) v1alpha1.AccessPolicy {
 	return *LoadObject(filename, &v1alpha1.AccessPolicy{}).(*v1alpha1.AccessPolicy)

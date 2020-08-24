@@ -24,7 +24,7 @@ On IBM Public Cloud, Identity and Access Management (IAM) is used to give access
 
 
 IBM Cloud IAM Kubernetes Operator provides a **user-friendly Operator for IKS and OpenShift to automate scenarios for managing access to IBM Cloud  Resources** via Kubernetes CRD-Based APIs:
-1. For access groups,
+1. For access groups & memberships,
 2. For custom  roles,
 3. For access policies, and
 4. For authorization policies
@@ -280,7 +280,7 @@ spec:
 and then run the command:
 ```kubectl create -f coskmspolicy.yaml```
 
-To find the status of your access policy, you can run the command:
+To find the status of your authorization policy, you can run the command:
 
 ```kubectl get authorizationpolicies.ibmcloud 
 NAME                 STATUS   AGE

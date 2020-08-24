@@ -36,6 +36,7 @@ cd $ROOT/test/e2e
 source ./test-cosuserrole.sh
 source ./test-cosusergroup.sh
 source ./test-cosuserpolicy.sh
+source ./test-cosuserauthpolicy.sh
 
 function cleanup() {
   set +e
@@ -50,5 +51,6 @@ u::header "running tests"
 ta::run
 tb::run
 tc::run
+td::run
 
 u::report_and_exit

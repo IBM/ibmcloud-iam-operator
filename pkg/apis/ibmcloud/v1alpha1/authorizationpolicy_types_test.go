@@ -21,7 +21,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 )
 
-func TestStorageComposableAP(t *testing.T) {
+func TestStorageComposableAuP(t *testing.T) {
 	key := types.NamespacedName{
 		Name:      "foo",
 		Namespace: "default",
@@ -35,7 +35,7 @@ func TestStorageComposableAP(t *testing.T) {
 			Source: Info{
 				ServiceClass: "cloud-object-storage",
 			},
-			Roles: []string{"Viewer","Administrator"},
+			Roles: []string{"Viewer", "Administrator"},
 			Target: Info{
 				ServiceClass: "kms",
 			},

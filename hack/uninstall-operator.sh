@@ -21,6 +21,7 @@
 kubectl delete --wait crd accessgroups.ibmcloud.ibm.com
 kubectl delete --wait crd customroles.ibmcloud.ibm.com
 kubectl delete --wait crd accesspolicies.ibmcloud.ibm.com
+kubectl delete --wait crd authorizationpolicies.ibmcloud.ibm.com
 
 # Delete all clusterwide resources for the operator
 kubectl delete clusterrole,clusterrolebinding -l app.kubernetes.io/name=ibmcloud-iam-operator  

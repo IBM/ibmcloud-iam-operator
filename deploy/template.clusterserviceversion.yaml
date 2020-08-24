@@ -25,20 +25,22 @@ spec:
 
     IBM Cloud IAM Kubernetes Operator provides a **user-friendly Operator for IKS and OpenShift to automate scenarios for managing access to IBM Cloud  Resources** via Kubernetes CRD-Based APIs:
     
-    1. For access groups,
+    1. For access groups & memberships,
 
-    2. For custom  roles, and
+    2. For custom  roles,
 
-    3. For access policies
+    3. For access policies, and
+
+    4. For authorization policies
 
 
     This will give users few advantages:
 
-    - The operator **makes it easier to specify access groups, custom roles, and access policies** at a high level in a Kubernetes  YAML  declaratively, 
+    - The operator **makes it easier to specify access groups, custom roles, access & authorization policies** at a high level in a Kubernetes  YAML  declaratively, 
     
     - The operator **automates interactions with IAM APIs** without requiring the user to know specifics,
     
-    - The operator **enforces access groups, custom roles, and access policies** via the operator's desired-state management. For example, if a user is moved out of a group accidentally, the operator would move them back and remediate the issue,
+    - The operator **enforces access groups, custom roles, access & authorization policies** via the operator's desired-state management. For example, if a user is moved out of a group accidentally, the operator would move them back and remediate the issue,
     
     - The operator **integrates IBM Cloud  IAM  tightly with Kubernetes'  built-in  support  for RBAC**.
     
@@ -71,7 +73,7 @@ spec:
     If you prefer to create the secret and the defaults manually,
     consult the [IBM Cloud IAM Operator documentation](https://github.com/IBM/ibmcloud-iam-operator).
 
-    ## Creating an Access Group, Custom Role or Access Policy
+    ## Creating an Access Group, Custom Role, Access or Authorization Policy
 
     You can create an access policy with name `cosuserpolicy` for user `avarghese@us.ibm.com` to access a Cloud Object Storage instance's bucket as an `Administrator`  using the following custom resource written in an yaml file `cosuserpolicy.yaml`:
 
@@ -101,6 +103,30 @@ spec:
         kubectl get accesspolicies.ibmcloud 
         NAME                 STATUS   AGE
         cosuserpolicy        Online   25s
+
+    You can create an authorization policy for `cloud-object-storage` services to be authorized to read `key-protect` instances using the following custom resource written in an yaml file `coskmspolicy.yaml`:
+
+        apiVersion: ibmcloud.ibm.com/v1alpha1
+        kind: AuthorizationPolicy
+        metadata:
+          name: coskmsauthpolicy
+        spec:
+          source:
+            serviceClass: cloud-object-storage
+          roles:      
+            - Reader
+          target:
+            serviceClass: kms
+
+    and then run the command:
+      
+        kubectl create -f coskmspolicy.yaml
+
+    To find the status of your authorization policy, you can run the command:
+
+        kubectl get authorizationpolicies.ibmcloud 
+        NAME                 STATUS   AGE
+        coskmspolicy        Online   25s
 
     Here's another example to create all three custom resources: You can create an access policy with name `demonewgrouppolicy` for access group resource `demonewgroup` in namespace `default` to access an Event Stream instance's topic `topic-ansu` as a custom role `ES Admin` that is running in the cluster as a custom role resource `democustomrole` in namespace `default` using the following yaml file [`accesspolicy_example_EventStreams_demo.yaml`](https://github.com/IBM/ibmcloud-iam-operator/blob/master/deploy/examples/accesspolicy_example_EventStreams_demo.yaml) :
 
