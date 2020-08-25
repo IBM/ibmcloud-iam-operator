@@ -16,6 +16,7 @@ limitations under the License.
 package accesspolicy
 
 import (
+	"fmt"
 	logtest1 "log"
 	"path/filepath"
 	"testing"
@@ -78,7 +79,9 @@ var _ = BeforeSuite(func() {
 		logtest1.Fatal(err)
 	}
 
-	mgr, err := manager.New(cfgg, manager.Options{})
+	mgr, err := manager.New(cfgg, manager.Options{
+		MetricsBindAddress: fmt.Sprintf("%s:%d", metricsHost, metricsPort),
+	})
 	Expect(err).NotTo(HaveOccurred())
 
 	c = mgr.GetClient()
