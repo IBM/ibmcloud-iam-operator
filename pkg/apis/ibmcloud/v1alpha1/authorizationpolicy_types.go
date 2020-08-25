@@ -22,29 +22,29 @@ import (
 )
 
 type Info struct {
-	ServiceClass   	string `json:"serviceClass,required"`
-	ServiceID     	string `json:"serviceID,omitempty"`
-	ResourceName  	string `json:"resourceName,omitempty"` 
-	ResourceID    	string `json:"resourceID,omitempty"`
-	ResourceKey    	string `json:"resourceKey,omitempty"`
-	ResourceValue  	string `json:"resourceValue,omitempty"`
-	ResourceGroup 	string `json:"resourceGroup,omitempty"` // mutually exclusive with ServiceID 
+	ServiceClass  string `json:"serviceClass,required"`
+	ServiceID     string `json:"serviceID,omitempty"`
+	ResourceName  string `json:"resourceName,omitempty"`
+	ResourceID    string `json:"resourceID,omitempty"`
+	ResourceKey   string `json:"resourceKey,omitempty"`
+	ResourceValue string `json:"resourceValue,omitempty"`
+	ResourceGroup string `json:"resourceGroup,omitempty"` // mutually exclusive with ServiceID
 }
 
 // AuthorizationPolicySpec defines the desired state of AuthorizationPolicy
 type AuthorizationPolicySpec struct {
-	Source  Info  		`json:"source,required"`
-	Roles   []string 	`json:"roles,required"`
-	Target  Info  		`json:"target,required"`
+	Source Info     `json:"source,required"`
+	Roles  []string `json:"roles,required"`
+	Target Info     `json:"target,required"`
 }
 
 // AuthorizationPolicyStatus defines the observed state of AuthorizationPolicy
 type AuthorizationPolicyStatus struct {
-	resv1.ResourceStatus 	`json:",inline"`
-	PolicyID 	string 	 	`json:"policyID,omitempty"`
-	Source  	Info  		`json:"source,omitempty"`
-	Roles   	[]string 	`json:"roles,omitempty"`
-	Target  	Info  		`json:"target,omitempty"`
+	resv1.ResourceStatus `json:",inline"`
+	PolicyID             string   `json:"policyID,omitempty"`
+	Source               Info     `json:"source,omitempty"`
+	Roles                []string `json:"roles,omitempty"`
+	Target               Info     `json:"target,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -69,6 +69,11 @@ type AuthorizationPolicyList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []AuthorizationPolicy `json:"items"`
+}
+
+// GetStatus returns the authorization policy status
+func (s *AuthorizationPolicy) GetStatus() resv1.Status {
+	return &s.Status
 }
 
 func init() {

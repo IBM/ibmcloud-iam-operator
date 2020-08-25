@@ -17,14 +17,14 @@ package authorizationpolicy
 
 import (
 	logtest1 "log"
+	"path/filepath"
 	"testing"
 	"time"
-	"path/filepath"
-	
+
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 
 	"k8s.io/client-go/kubernetes/scheme"
@@ -44,7 +44,7 @@ import (
 
 var (
 	c         client.Client
-	cfgg     *rest.Config
+	cfgg      *rest.Config
 	namespace string
 	scontext  context.Context
 	t         *envtest.Environment
@@ -66,8 +66,8 @@ var _ = BeforeSuite(func() {
 	t = &envtest.Environment{
 		CRDDirectoryPaths:        []string{filepath.Join("..", "..", "..", "deploy", "crds")},
 		ControlPlaneStartTimeout: 2 * time.Minute,
-		KubeAPIServerFlags: append([]string(nil), "--admission-control=MutatingAdmissionWebhook"),
-		UseExistingCluster: &useExistingCluster,
+		KubeAPIServerFlags:       append([]string(nil), "--admission-control=MutatingAdmissionWebhook"),
+		UseExistingCluster:       &useExistingCluster,
 	}
 	apis.AddToScheme(scheme.Scheme)
 
@@ -91,7 +91,6 @@ var _ = BeforeSuite(func() {
 
 })
 
-
 var _ = AfterSuite(func() {
 	clientset := test.GetClientsetOrDie(cfgg)
 	test.DeleteNamespace(clientset.CoreV1().Namespaces(), namespace)
@@ -100,7 +99,7 @@ var _ = AfterSuite(func() {
 })
 
 var _ = Describe("authorizationpolicy", func() {
-	 DescribeTable("should be ready",
+	DescribeTable("should be ready",
 		func(AuthorizationPolicyfile string) {
 			// now test creation of AuthorizationPolicy
 			ap := test.LoadAuthorizationPolicy("autestdata/" + AuthorizationPolicyfile)
@@ -128,7 +127,7 @@ var _ = Describe("authorizationpolicy", func() {
 		Entry("string param", "coskmspolicy.yaml"),
 		Entry("string param", "coskmspolicy_instance.yaml"),
 		Entry("string param", "coskmspolicy_resourceGroup.yaml"),
-	) 
+	)
 
 	DescribeTable("should fail",
 		func(AuthorizationPolicyfile string) {
@@ -139,14 +138,13 @@ var _ = Describe("authorizationpolicy", func() {
 		},
 
 		Entry("string param", "cosbadrole.yaml"),
-		Entry("string param", "cosbadatarget.yaml"),
+		Entry("string param", "cosbadtarget.yaml"),
 		Entry("string param", "cosbadspec_1.yaml"),
-
 	)
-	
+
 	DescribeTable("should delete",
 		func(AuthorizationPolicyfile string) {
-			ap := test.LoadAuthorizationPolicy("aptestdata/" + AuthorizationPolicyfile)
+			ap := test.LoadAuthorizationPolicy("autestdata/" + AuthorizationPolicyfile)
 			ap.Namespace = namespace
 
 			// delete AuthorizationPolicy
@@ -155,8 +153,8 @@ var _ = Describe("authorizationpolicy", func() {
 		},
 
 		Entry("string param", "cosbadrole.yaml"),
-		Entry("string param", "cosbadatarget.yaml"),
+		Entry("string param", "cosbadtarget.yaml"),
 		Entry("string param", "cosbadspec_1.yaml"),
-	) 
+	)
 },
 )
