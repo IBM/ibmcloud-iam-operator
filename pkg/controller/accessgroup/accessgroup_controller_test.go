@@ -138,7 +138,7 @@ var _ = Describe("accessgroup", func() {
 			Eventually(test.GetState(scontext, apobj)).Should(Equal(resv1.ResourceStateFailed))
 		},
 
-		Entry("string param", "cosbaduseraccessgroupmember.yaml"),
+		//Entry("string param", "cosbaduseraccessgroupmember.yaml"),
 		Entry("string param", "cosbadserviceaccessgroupmember.yaml"),
 		Entry("string param", "cosbadspec_1.yaml"),
 	)
@@ -153,7 +153,7 @@ var _ = Describe("accessgroup", func() {
 			Eventually(test.GetObject(scontext, &ap)).Should((BeNil()))
 		},
 
-		Entry("string param", "cosbaduseraccessgroupmember.yaml"),
+		//Entry("string param", "cosbaduseraccessgroupmember.yaml"),
 		Entry("string param", "cosbadserviceaccessgroupmember.yaml"),
 		Entry("string param", "cosbadspec_1.yaml"),
 	)
