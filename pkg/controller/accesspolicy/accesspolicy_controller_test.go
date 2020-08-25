@@ -17,14 +17,14 @@ package accesspolicy
 
 import (
 	logtest1 "log"
+	"path/filepath"
 	"testing"
 	"time"
-	"path/filepath"
-	
+
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 
 	"k8s.io/client-go/kubernetes/scheme"
@@ -43,12 +43,14 @@ import (
 )
 
 var (
-	c         client.Client
-	cfgg     *rest.Config
-	namespace string
-	scontext  context.Context
-	t         *envtest.Environment
-	stop      chan struct{}
+	c           client.Client
+	cfgg        *rest.Config
+	namespace   string
+	scontext    context.Context
+	t           *envtest.Environment
+	stop        chan struct{}
+	metricsHost       = "0.0.0.0"
+	metricsPort int32 = 8085
 )
 
 func TestAccessPolicy(t *testing.T) {
@@ -66,8 +68,8 @@ var _ = BeforeSuite(func() {
 	t = &envtest.Environment{
 		CRDDirectoryPaths:        []string{filepath.Join("..", "..", "..", "deploy", "crds")},
 		ControlPlaneStartTimeout: 2 * time.Minute,
-		KubeAPIServerFlags: append([]string(nil), "--admission-control=MutatingAdmissionWebhook"),
-		UseExistingCluster: &useExistingCluster,
+		KubeAPIServerFlags:       append([]string(nil), "--admission-control=MutatingAdmissionWebhook"),
+		UseExistingCluster:       &useExistingCluster,
 	}
 	apis.AddToScheme(scheme.Scheme)
 
@@ -91,7 +93,6 @@ var _ = BeforeSuite(func() {
 
 })
 
-
 var _ = AfterSuite(func() {
 	clientset := test.GetClientsetOrDie(cfgg)
 	test.DeleteNamespace(clientset.CoreV1().Namespaces(), namespace)
@@ -100,7 +101,7 @@ var _ = AfterSuite(func() {
 })
 
 var _ = Describe("accesspolicy", func() {
-	 DescribeTable("should be ready",
+	DescribeTable("should be ready",
 		func(AccessPolicyfile string) {
 			// now test creation of AccessPolicy
 			ap := test.LoadAccessPolicy("aptestdata/" + AccessPolicyfile)
@@ -127,8 +128,8 @@ var _ = Describe("accesspolicy", func() {
 
 		Entry("string param", "cosgrouppolicy.yaml"),
 		Entry("string param", "cosservicepolicy.yaml"),
-		Entry("string param", "cosuserpolicy.yaml"),	
-	) 
+		Entry("string param", "cosuserpolicy.yaml"),
+	)
 
 	DescribeTable("should fail",
 		func(AccessPolicyfile string) {
@@ -147,7 +148,7 @@ var _ = Describe("accesspolicy", func() {
 		// Entry("string param", "cosbadspec_2.yaml"),
 		// Entry("string param", "cosbadspec_3.yaml"),
 	)
-	
+
 	DescribeTable("should delete",
 		func(AccessPolicyfile string) {
 			ap := test.LoadAccessPolicy("aptestdata/" + AccessPolicyfile)
@@ -165,7 +166,7 @@ var _ = Describe("accesspolicy", func() {
 		Entry("string param", "cosbadresource.yaml"),
 		// Entry("string param", "cosbadspec_1.yaml"),
 		// Entry("string param", "cosbadspec_2.yaml"),
-		// Entry("string param", "cosbadspec_3.yaml"),	
-	) 
+		// Entry("string param", "cosbadspec_3.yaml"),
+	)
 },
 )

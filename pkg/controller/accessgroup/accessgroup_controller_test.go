@@ -16,16 +16,16 @@ limitations under the License.
 package accessgroup
 
 import (
+	"fmt"
 	logtest1 "log"
+	"path/filepath"
 	"testing"
 	"time"
-	"path/filepath"
-	"fmt"
-	
+
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 
 	"k8s.io/client-go/kubernetes/scheme"
@@ -44,13 +44,13 @@ import (
 )
 
 var (
-	c         client.Client
-	cfgg     *rest.Config
-	namespace string
-	scontext  context.Context
-	t         *envtest.Environment
-	stop      chan struct{}
-	metricsHost = "0.0.0.0"
+	c           client.Client
+	cfgg        *rest.Config
+	namespace   string
+	scontext    context.Context
+	t           *envtest.Environment
+	stop        chan struct{}
+	metricsHost       = "0.0.0.0"
 	metricsPort int32 = 8082
 )
 
@@ -69,8 +69,8 @@ var _ = BeforeSuite(func() {
 	t = &envtest.Environment{
 		CRDDirectoryPaths:        []string{filepath.Join("..", "..", "..", "deploy", "crds")},
 		ControlPlaneStartTimeout: 2 * time.Minute,
-		KubeAPIServerFlags: append([]string(nil), "--admission-control=MutatingAdmissionWebhook"),
-		UseExistingCluster: &useExistingCluster,
+		KubeAPIServerFlags:       append([]string(nil), "--admission-control=MutatingAdmissionWebhook"),
+		UseExistingCluster:       &useExistingCluster,
 	}
 	apis.AddToScheme(scheme.Scheme)
 
@@ -104,46 +104,46 @@ var _ = AfterSuite(func() {
 })
 
 var _ = Describe("accessgroup", func() {
-   DescribeTable("should be ready",
-	   func(AccessGroupfile string) {
-		   // now test creation of AccessGroup
-		   ap := test.LoadAccessGroup("agtestdata/" + AccessGroupfile)
-		   apobj := test.PostInNs(scontext, &ap, true, 0)
+	DescribeTable("should be ready",
+		func(AccessGroupfile string) {
+			// now test creation of AccessGroup
+			ap := test.LoadAccessGroup("agtestdata/" + AccessGroupfile)
+			apobj := test.PostInNs(scontext, &ap, true, 0)
 
-		   // check AccessGroup is online
-		   Eventually(test.GetState(scontext, apobj)).Should(Equal(resv1.ResourceStateOnline))
-	   },
+			// check AccessGroup is online
+			Eventually(test.GetState(scontext, apobj)).Should(Equal(resv1.ResourceStateOnline))
+		},
 
-	   Entry("string param", "cosaccessgroup.yaml"),
-   )
+		Entry("string param", "cosaccessgroup.yaml"),
+	)
 
-   DescribeTable("should delete",
-	   func(AccessGroupfile string) {
-		   ap := test.LoadAccessGroup("agtestdata/" + AccessGroupfile)
-		   ap.Namespace = namespace
+	DescribeTable("should delete",
+		func(AccessGroupfile string) {
+			ap := test.LoadAccessGroup("agtestdata/" + AccessGroupfile)
+			ap.Namespace = namespace
 
-		   // delete AccessGroup
-		   test.DeleteObject(scontext, &ap, true)
-		   Eventually(test.GetObject(scontext, &ap)).Should((BeNil()))
-	   },
+			// delete AccessGroup
+			test.DeleteObject(scontext, &ap, true)
+			Eventually(test.GetObject(scontext, &ap)).Should((BeNil()))
+		},
 
-	   Entry("string param", "cosaccessgroup.yaml"),	
-   )
+		Entry("string param", "cosaccessgroup.yaml"),
+	)
 
-   DescribeTable("should fail",
-	   func(AccessGroupfile string) {
-		   ap := test.LoadAccessGroup("agtestdata/" + AccessGroupfile)
-		   apobj := test.PostInNs(scontext, &ap, true, 0)
+	DescribeTable("should fail",
+		func(AccessGroupfile string) {
+			ap := test.LoadAccessGroup("agtestdata/" + AccessGroupfile)
+			apobj := test.PostInNs(scontext, &ap, true, 0)
 
-		   Eventually(test.GetState(scontext, apobj)).Should(Equal(resv1.ResourceStateFailed))
-	   },
+			Eventually(test.GetState(scontext, apobj)).Should(Equal(resv1.ResourceStateFailed))
+		},
 
-	   Entry("string param", "cosbaduseraccessgroupmember.yaml"),
-	   Entry("string param", "cosbadserviceaccessgroupmember.yaml"),
-	   Entry("string param", "cosbadspec_1.yaml"),
-   )
+		Entry("string param", "cosbaduseraccessgroupmember.yaml"),
+		Entry("string param", "cosbadserviceaccessgroupmember.yaml"),
+		Entry("string param", "cosbadspec_1.yaml"),
+	)
 
-   DescribeTable("should delete",
+	DescribeTable("should delete",
 		func(AccessGroupfile string) {
 			ap := test.LoadAccessGroup("agtestdata/" + AccessGroupfile)
 			ap.Namespace = namespace
@@ -158,4 +158,4 @@ var _ = Describe("accessgroup", func() {
 		Entry("string param", "cosbadspec_1.yaml"),
 	)
 },
-) 
+)

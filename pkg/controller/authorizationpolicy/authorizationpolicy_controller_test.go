@@ -43,12 +43,14 @@ import (
 )
 
 var (
-	c         client.Client
-	cfgg      *rest.Config
-	namespace string
-	scontext  context.Context
-	t         *envtest.Environment
-	stop      chan struct{}
+	c           client.Client
+	cfgg        *rest.Config
+	namespace   string
+	scontext    context.Context
+	t           *envtest.Environment
+	stop        chan struct{}
+	metricsHost       = "0.0.0.0"
+	metricsPort int32 = 8084
 )
 
 func TestAuthorizationPolicy(t *testing.T) {
